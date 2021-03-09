@@ -21,4 +21,12 @@ export default function nuxtVesp(moduleOptions) {
   if (options.axios !== false) {
     this.options.plugins.push(path.resolve(__dirname, 'plugins/axios.js'))
   }
+
+  if (options.utils !== false) {
+    this.options.plugins.push(path.resolve(__dirname, 'plugins/utils.js'))
+  }
+
+  if (options.filters !== false) {
+    this.options.plugins.push(path.resolve(__dirname, 'plugins/filters.js'))
+  }
 }

@@ -11,7 +11,7 @@ export default {
     ],
   },
   modules: ['@nuxtjs/axios', '@nuxtjs/toast', 'bootstrap-vue/nuxt', 'nuxt-i18n'],
-  buildModules: ['@nuxtjs/style-resources', '@nuxtjs/fontawesome', '@nuxtjs/eslint-module'],
+  buildModules: ['@nuxtjs/style-resources', '@nuxtjs/fontawesome', '@nuxtjs/date-fns', '@nuxtjs/eslint-module'],
   build: {
     extractCSS: process.env.NODE_ENV === 'production',
   },
@@ -25,6 +25,7 @@ export default {
     componentPlugins: [
       'LayoutPlugin',
       'NavbarPlugin',
+      'LinkPlugin',
       'AlertPlugin',
       'TablePlugin',
       'ModalPlugin',
@@ -82,5 +83,10 @@ export default {
       fallbackLocale: 'en',
       messages: {en, de, ru},
     },
+  },
+  dateFns: {
+    defaultLocale: 'en-GB',
+    locales: ['en-GB', 'de', 'ru'],
+    methods: ['format', 'getUnixTime', 'formatDistanceToNow', 'differenceInSeconds'],
   },
 }

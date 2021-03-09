@@ -8,6 +8,7 @@ This library add default modules, plugins and settings to your Nuxt.js project t
 - [Nuxt Axios](https://axios.nuxtjs.org) for making requests to remote APIs
 - [Nuxt Style Resources](https://github.com/nuxt-community/style-resources-module) for using common sass variables in components
 - [Nuxt Toast](https://www.npmjs.com/package/%40nuxtjs/toast) for displaying handy popup messages
+- [Nuxt Date-Fns](https://github.com/nuxt-community/date-fns-module)
 - [Eslint](https://eslint.org) and [Prettier](https://prettier.io) to add rules for your code style
 - **Node SASS** and **SASS loader** to support sass/scss styles in assets and components
 
@@ -50,6 +51,8 @@ Config.modules.push(['@vesp/frontend', {
   scss: true, // load SCSS files for components
   i18n: true, // enable Russian rules for i18n pluralization
   axios: true, // add special interceptors to Axios to display requests errors
+  utils: true, // usefull utilities, for example $hasScope to check users permissions
+  filters: true, // usefull Vue filters to format output
 }])
 ```
 By default all options are true.
