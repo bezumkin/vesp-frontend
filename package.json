@@ -1,0 +1,56 @@
+{
+  "license": "MIT",
+  "name": "@vesp/frontend",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bezumkin/vesp-frontend.git"
+  },
+  "author": "bezumkin",
+  "bugs": {
+    "url": "https://github.com/bezumkin/vesp-frontend/issues"
+  },
+  "homepage": "https://github.com/bezumkin/vesp-frontend#readme",
+  "description": "",
+  "scripts": {
+    "analyze": "nuxt build --analyze",
+    "build": "yarn build",
+    "dev": "nuxt -p=4000 -H=0.0.0.0",
+    "generate": "nuxt generate",
+    "lint:check": "eslint --ext .js,.vue ./",
+    "lint:fix": "eslint --fix --ext .js,.vue ./",
+    "start": "nuxt start -p=4000"
+  },
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@nuxtjs/axios": "^5.13.1",
+    "@nuxtjs/eslint-config": "^5.0.0",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "@nuxtjs/fontawesome": "^1.1.2",
+    "@nuxtjs/style-resources": "^1.0.0",
+    "@nuxtjs/toast": "^3.3.1",
+    "babel-eslint": "^10.1.0",
+    "bootstrap-vue": "^2.21.2",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-nuxt": "^2.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "node-sass": "^5.0.0",
+    "nuxt": "^2.15.2",
+    "nuxt-i18n": "^6.20.4",
+    "prettier": "^2.2.1",
+    "sass-loader": "^10.1.1"
+  },
+  "files": [
+    "assets",
+    "components",
+    "lexicons",
+    "plugins",
+    "index.js",
+    "nuxt.config.js"
+  ],
+  "devDependencies": {
+    "@nuxt/types": "^2.15.2"
+  }
+}

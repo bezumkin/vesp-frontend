@@ -1,0 +1,9 @@
+/.idea
+/.nuxt
+/node_modules
+/.env
+/.env.local
+/.eslintcache
+/yarn.lock
+/package-lock.json
+/yarn-error.log

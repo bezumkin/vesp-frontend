@@ -1,0 +1,86 @@
+import en from './lexicons/en'
+import de from './lexicons/de'
+import ru from './lexicons/ru'
+
+export default {
+  head: {
+    title: 'Vesp Frontend',
+    meta: [
+      {charset: 'utf-8'},
+      {name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'},
+    ],
+  },
+  modules: ['@nuxtjs/axios', '@nuxtjs/toast', 'bootstrap-vue/nuxt', 'nuxt-i18n'],
+  buildModules: ['@nuxtjs/style-resources', '@nuxtjs/fontawesome', '@nuxtjs/eslint-module'],
+  build: {
+    extractCSS: process.env.NODE_ENV === 'production',
+  },
+  css: ['~/assets/scss/index.scss'],
+  styleResources: {
+    scss: '~/assets/scss/_variables.scss',
+  },
+  bootstrapVue: {
+    bootstrapCSS: false,
+    bootstrapVueCSS: false,
+    componentPlugins: [
+      'LayoutPlugin',
+      'NavbarPlugin',
+      'AlertPlugin',
+      'TablePlugin',
+      'ModalPlugin',
+      'PaginationPlugin',
+      'ButtonPlugin',
+      'SpinnerPlugin',
+      'OverlayPlugin',
+      'FormPlugin',
+      'FormGroupPlugin',
+      'FormInputPlugin',
+      'FormTextareaPlugin',
+      'FormSelectPlugin',
+      'InputGroupPlugin',
+    ],
+  },
+  axios: {
+    baseURL: '/api/',
+  },
+  toast: {
+    position: 'bottom-right',
+    keepOnHover: true,
+    duration: 5000,
+    theme: 'default',
+  },
+  fontawesome: {
+    component: 'fa',
+    icons: {
+      solid: ['faSync', 'faEdit', 'faTimes', 'faPlus', 'faRedo', 'faFilter', 'faCaretDown'],
+    },
+  },
+  i18n: {
+    strategy: 'no_prefix',
+    locales: [
+      {code: 'en', title: 'English'},
+      {code: 'de', title: 'Deutsche'},
+      {code: 'ru', title: 'Русский'},
+    ],
+    defaultLocale: 'en',
+    differentDomains: false,
+    vuex: {
+      moduleName: 'i18n',
+      syncLocale: true,
+      syncMessages: true,
+      syncRouteParams: false,
+    },
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieDomain: null,
+      cookieKey: 'i18n_redirected',
+      alwaysRedirect: false,
+      fallbackLocale: 'en',
+    },
+    parsePages: false,
+    vueI18n: {
+      fallbackLocale: 'en',
+      messages: {en, de, ru},
+    },
+  },
+}
