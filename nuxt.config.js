@@ -44,6 +44,10 @@ export default {
   axios: {
     baseURL: '/api/',
   },
+  router: {
+    linkActiveClass: 'active',
+    linkExactActiveClass: 'exact-active',
+  },
   toast: {
     position: 'bottom-right',
     keepOnHover: true,
