@@ -2,7 +2,7 @@
   <vesp-modal v-model="record" :url="url" :title="record.title" :update-key="updateKey" action-create="post">
     <template #form-fields>
       <b-form-group :label="$t('components.table.columns.title')">
-        <b-form-input v-model="record.title" />
+        <b-form-input v-model="record.title" required />
       </b-form-group>
 
       <b-form-group :label="$t('components.table.columns.userId')">

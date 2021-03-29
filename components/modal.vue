@@ -17,19 +17,20 @@
   >
     <template #default>
       <b-overlay :opacity="0.5" :show="loading">
-        <b-form @submit.prevent="onSubmit">
-          <slot name="form-fields" v-bind="{record, loading, submit: onSubmit}" />
+        <b-form ref="form" @submit.prevent="submit">
+          <slot name="form-fields" v-bind="{record, loading, submit}" />
+          <input type="submit" class="d-none" />
         </b-form>
       </b-overlay>
     </template>
     <template #modal-footer="{cancel}">
       <b-row class="w-100 mt-2 justify-content-between">
         <b-btn :variant="cancelVariant" :disabled="loading" @click="cancel" v-text="cancelTitle" />
-        <b-btn v-if="url" :variant="okVariant" :disabled="loading" @click="onSubmit" v-text="okTitle" />
+        <b-btn v-if="url" :variant="okVariant" :disabled="loading" @click="formSubmit" v-text="okTitle" />
       </b-row>
     </template>
     <template v-for="(_, slotName) in $scopedSlots" :slot="slotName" slot-scope="slotData">
-      <slot :name="slotName" v-bind="{...slotData, record, loading, submit: onSubmit}" />
+      <slot :name="slotName" v-bind="{...slotData, record, loading, submit}" />
     </template>
   </b-modal>
 </template>
@@ -144,7 +145,29 @@ export default {
     },
   },
   methods: {
-    async onSubmit() {
+    formSubmit() {
+      let form = this.$refs.form
+      if (!form && this.$scopedSlots.default) {
+        const slot = this.$scopedSlots.default()
+        for (const item of slot) {
+          if (item.context && item.context.$refs && item.context.$refs.form) {
+            form = item.context.$refs.form
+            break
+          }
+        }
+      }
+      if (form) {
+        const submit = form.querySelector('[type="submit"]')
+        if (submit) {
+          submit.click()
+        } else {
+          this.submit()
+        }
+      } else {
+        this.submit()
+      }
+    },
+    async submit() {
       if (!this.url) {
         return
       }
