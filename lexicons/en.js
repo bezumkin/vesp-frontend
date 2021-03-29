@@ -3,6 +3,9 @@ export default {
     create: 'Create',
     edit: 'Edit',
     delete: 'Delete',
+    submit: 'Submit',
+    cancel: 'Cancel',
+    close: 'Close',
   },
   components: {
     confirm_delete_title: 'Confirmation required',
@@ -21,11 +24,6 @@ export default {
         actions: 'Actions',
         image: 'Image',
       },
-    },
-    modal: {
-      submit: 'Submit',
-      cancel: 'Cancel',
-      close: 'Close',
     },
     /*
     upload: {

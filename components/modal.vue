@@ -77,13 +77,13 @@ export default {
     okTitle: {
       type: String,
       default() {
-        return this.$t('components.modal.submit')
+        return this.$t('actions.submit')
       },
     },
     cancelTitle: {
       type: String,
       default() {
-        return this.$t('components.modal.cancel')
+        return this.$t('actions.cancel')
       },
     },
     noCloseOnEsc: {

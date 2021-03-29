@@ -1,36 +1,42 @@
-export default ({app}, inject) => {
-  const hasScope = (scope) => {
-    if (!app.$auth.loggedIn) {
-      return false
-    }
-    if (scope.includes('/')) {
-      return app.$auth.hasScope(scope) || app.$auth.hasScope(scope.replace(/\/.*/, ''))
-    }
-    return app.$auth.hasScope(scope) || app.$auth.hasScope(`${scope}/get`)
+export function hasScope(scopes, auth) {
+  if (!auth || !auth.loggedIn || !auth.user || !auth.user.scope) {
+    return false
   }
 
-  inject('hasScope', (scopes) => {
-    if (Array.isArray(scopes)) {
-      for (const scope of scopes) {
-        if (hasScope(scope)) {
-          return true
-        }
-      }
-      return false
+  const check = (scope) => {
+    if (scope.includes('/')) {
+      return auth.user.scope.includes(scope) || auth.user.scope.includes(scope.replace(/\/.*/, ''))
     }
-    return hasScope(scopes)
+    return auth.user.scope.includes(scope) || auth.user.scope.includes(`${scope}/get`)
+  }
+
+  if (Array.isArray(scopes)) {
+    for (const scope of scopes) {
+      if (check(scope)) {
+        return true
+      }
+    }
+    return false
+  }
+
+  return check(scopes)
+}
+
+export function imageLink(file, options = {}, baseUrl = 'image') {
+  const params = [baseUrl]
+  params.push(/^\d+$/.test(file) ? file : file.id)
+  if (file.updated_at) {
+    options.t = new Date(file.updated_at).getTime()
+  }
+  return params.join('/') + '?' + new URLSearchParams(options).toString()
+}
+
+export default ({app}, inject) => {
+  inject('hasScope', (scopes) => {
+    return hasScope(scopes, app.$auth)
   })
 
-  inject('image', (data, options) => {
-    const params = [app.$axios.defaults.baseURL + 'image']
-    params.push(/^\d+$/.test(data) ? data : data.id)
-    if (!options) {
-      options = {}
-    }
-    if (data.updated_at) {
-      options.t = new Date(data.updated_at).getTime()
-    }
-
-    return params.join('/') + '?' + new URLSearchParams(options).toString()
+  inject('image', (file, options) => {
+    return imageLink(file, options, app.$axios.defaults.baseURL + 'image')
   })
 }

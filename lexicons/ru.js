@@ -3,6 +3,9 @@ export default {
     create: 'Создать',
     edit: 'Изменить',
     delete: 'Удалить',
+    submit: 'Отправить',
+    cancel: 'Отмена',
+    close: 'Закрыть',
   },
   components: {
     confirm_delete_title: 'Требуется подтверждение',
@@ -21,11 +24,6 @@ export default {
         actions: 'Действия',
         image: 'Картинка',
       },
-    },
-    modal: {
-      submit: 'Отправить',
-      cancel: 'Отмена',
-      close: 'Закрыть',
     },
     /*
     upload: {

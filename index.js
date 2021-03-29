@@ -1,7 +1,23 @@
 import path from 'path'
+import {existsSync} from 'fs'
 import Config from './nuxt.config.js'
 
 export {Config}
+
+export function findEnv(dir, files = ['.env.local', '.env', '.env.dist']) {
+  for (const name of files) {
+    const file = path.resolve(dir, name)
+    if (existsSync(file)) {
+      return file
+    }
+  }
+  return false
+}
+
+export function loadEnv(file = null, config = {}) {
+  config.path = file
+  return require('dotenv').config(config)
+}
 
 export default function nuxtVesp(moduleOptions) {
   const options = Object.assign({}, this.options.Vesp, moduleOptions)

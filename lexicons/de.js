@@ -3,6 +3,9 @@ export default {
     create: 'Erstellen',
     edit: 'Bearbeiten',
     delete: 'Löschen',
+    submit: 'Speichern',
+    cancel: 'Abbrechen',
+    close: 'Schließen',
   },
   components: {
     confirm_delete_title: 'Bestätigung erforderlich',
@@ -21,11 +24,6 @@ export default {
         actions: 'Aktionen',
         image: 'Bild',
       },
-    },
-    modal: {
-      submit: 'Speichern',
-      cancel: 'Abbrechen',
-      close: 'Schließen',
     },
     /*
     upload: {

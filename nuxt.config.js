@@ -93,4 +93,18 @@ export default {
     locales: ['en-GB', 'de', 'ru'],
     methods: ['format', 'getUnixTime', 'formatDistanceToNow', 'differenceInSeconds'],
   },
+  auth: {
+    redirect: false,
+    watchLoggedIn: true,
+    resetOnError: true,
+    strategies: {
+      local: {
+        endpoints: {
+          login: {url: 'security/login', method: 'post', propertyName: 'token'},
+          logout: {url: 'security/logout', method: 'post'},
+          user: {url: 'user/profile', method: 'get', propertyName: 'user'},
+        },
+      },
+    },
+  }
 }
