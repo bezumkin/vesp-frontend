@@ -77,6 +77,12 @@ export default {
         return {}
       },
     },
+    filterProps: {
+      type: Object,
+      default() {
+        return {}
+      },
+    },
     emptyText: {
       type: String,
       default: 'No results',
@@ -123,11 +129,14 @@ export default {
     async fetch() {
       if (this.url) {
         const params = {
-          query: this.externalValue,
-          limit: this.limit,
-          sort: this.sort || this.textField,
-          dir: this.dir,
-          combo: true,
+          ...this.filterProps,
+          ...{
+            query: this.externalValue,
+            limit: this.limit,
+            sort: this.sort || this.textField,
+            dir: this.dir,
+            combo: true,
+          },
         }
         const {data: res} = await this.$axios.get(this.url, {params})
         this.options = res.rows
