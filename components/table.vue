@@ -213,7 +213,13 @@ export default {
         const res = await this.$bvModal.msgBoxConfirm(this.$t('components.confirm_delete_message'), properties)
         if (res) {
           const params = {}
-          params[this.primaryKey] = item[this.primaryKey]
+          if (Array.isArray(this.primaryKey)) {
+            for (const i of this.primaryKey) {
+              params[i] = item[i]
+            }
+          } else {
+            params[this.primaryKey] = item[this.primaryKey]
+          }
           try {
             await this.$axios.delete(this.url, {params})
             this.refresh()
