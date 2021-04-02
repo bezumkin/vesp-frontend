@@ -11,7 +11,7 @@
         @keydown="onKeydown"
       />
       <template #append>
-        <b-button :disabled="!options.length" @click.prevent="toggleDropdown">
+        <b-button :disabled="!options.length || disabled || readonly" @click.prevent="toggleDropdown">
           <fa icon="caret-down" />
         </b-button>
       </template>
@@ -71,10 +71,30 @@ export default {
       type: Boolean,
       default: false,
     },
+    emptyText: {
+      type: String,
+      default: 'No results',
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     inputProps: {
       type: Object,
       default() {
-        return {}
+        return {
+          required: this.required,
+          readonly: this.readonly,
+          disabled: this.disabled,
+        }
       },
     },
     filterProps: {
@@ -82,10 +102,6 @@ export default {
       default() {
         return {}
       },
-    },
-    emptyText: {
-      type: String,
-      default: 'No results',
     },
   },
   data() {
