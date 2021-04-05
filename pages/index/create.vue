@@ -12,22 +12,31 @@
       <b-form-group :label="$t('components.table.columns.body')">
         <b-form-textarea v-model="record.body" rows="5" required />
       </b-form-group>
+
+      <vesp-input-date-picker v-model="record.date" type="date" />
+
+      <b-form-group :label="$t('components.table.columns.body')">
+        <b-form-textarea v-model="record.body" rows="5" required />
+      </b-form-group>
     </template>
   </vesp-modal>
 </template>
 
 <script>
-import {url} from '~/pages/index'
+import VespInputDatePicker from '@/components/inputs/date-picker'
 import VespModal from '~/components/modal'
+import {url} from '~/pages/index'
 
 export default {
   name: 'CreatePage',
-  components: {VespModal},
+  components: {VespInputDatePicker, VespModal},
   data() {
     return {
       url,
       record: {
         title: '',
+        date: ['2020-03-05 12:15:55', '2020-03-08 12:15:55'],
+        // date: '2020-03-05 12:15:55',
       },
       updateKey: 'json-posts',
     }

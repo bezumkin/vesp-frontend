@@ -77,6 +77,9 @@ Very usefull for submitting a list of social networks for user.
 ### Vesp-Input-Combo-Box
 `b-form-input` with popup list containing variants from remote API.
 
+### Vesp-Input-Date-Picker
+`vue2-datepicker` with some settings
+
 ## Examples
 
 See `layouts` and `pages` directories for examples of using components.

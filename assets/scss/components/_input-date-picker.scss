@@ -1,0 +1,37 @@
+.vesp-date-picker {
+  @import '~vue2-datepicker/scss/index.scss';
+
+  .mx-datepicker {
+    width: 100% !important;
+
+    .mx-input-wrapper {
+      display: flex;
+      align-items: stretch;
+
+      .form-control {
+        width: calc(100% - 35px);
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        padding-right: 0;
+      }
+
+      .mx-icon-calendar,
+      .mx-icon-clear {
+        display: block;
+        position: relative;
+        right: 0;
+        top: auto;
+        transform: none;
+      }
+
+      .btn {
+        width: 35px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        height: 100%;
+        text-align: center;
+        padding: 0;
+      }
+    }
+  }
+}

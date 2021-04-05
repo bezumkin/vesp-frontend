@@ -57,7 +57,7 @@ export default {
   fontawesome: {
     component: 'fa',
     icons: {
-      solid: ['faSync', 'faEdit', 'faTimes', 'faPlus', 'faRedo', 'faFilter', 'faCaretDown'],
+      solid: ['faSync', 'faEdit', 'faTimes', 'faPlus', 'faRedo', 'faFilter', 'faCaretDown', 'faCalendarAlt'],
     },
   },
   i18n: {
@@ -91,7 +91,7 @@ export default {
   dateFns: {
     defaultLocale: 'en-GB',
     locales: ['en-GB', 'de', 'ru'],
-    methods: ['format', 'getUnixTime', 'formatDistanceToNow', 'differenceInSeconds'],
+    methods: ['parse', 'format', 'getUnixTime', 'formatDistanceToNow', 'differenceInSeconds'],
   },
   auth: {
     redirect: false,
@@ -106,5 +106,5 @@ export default {
         },
       },
     },
-  }
+  },
 }
