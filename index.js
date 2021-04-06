@@ -16,7 +16,7 @@ export function findEnv(dir, files = ['.env.local', '.env', '.env.dist']) {
 
 export function loadEnv(file = null, config = {}) {
   config.path = file
-  return require('dotenv').config(config)
+  return require('dotenv').config(config).parsed
 }
 
 export default function nuxtVesp(moduleOptions) {
