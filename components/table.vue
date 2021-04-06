@@ -136,7 +136,7 @@ export default {
       },
     },
     primaryKey: {
-      type: String,
+      type: [String, Array],
       default: 'id',
     },
     sort: {
