@@ -39,6 +39,14 @@ export default {
       type: [String, Number],
       default: '',
     },
+    type: {
+      type: String,
+      default: 'text',
+    },
+    inputmode: {
+      type: String,
+      default: 'text',
+    },
     url: {
       type: String,
       default: '',
@@ -75,6 +83,10 @@ export default {
       type: String,
       default: 'No results',
     },
+    placeholder: {
+      type: String,
+      default: '',
+    },
     required: {
       type: Boolean,
       default: false,
@@ -86,16 +98,6 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
-    },
-    inputProps: {
-      type: Object,
-      default() {
-        return {
-          required: this.required,
-          readonly: this.readonly,
-          disabled: this.disabled,
-        }
-      },
     },
     filterProps: {
       type: Object,
@@ -110,6 +112,8 @@ export default {
       externalValue: '',
       selected: null,
       dropdown: false,
+      filtersHash: null,
+      loading: false,
     }
   },
   computed: {
@@ -120,6 +124,32 @@ export default {
       set(newValue) {
         this.$emit('input', newValue)
       },
+    },
+    inputProps() {
+      return {
+        type: this.type,
+        inputmode: this.inputmode,
+        placeholder: this.placeholder,
+        required: this.required,
+        readonly: this.readonly,
+        disabled: this.disabled,
+      }
+    },
+  },
+  watch: {
+    async filterProps(value) {
+      const hash = JSON.stringify(value)
+      if (hash === this.filtersHash) {
+        return
+      }
+      this.filtersHash = hash
+
+      await this.fetch('')
+      if (this.internalValue) {
+        if (this.options.findIndex((item) => item[this.valueField] === this.internalValue) === -1) {
+          this.reset()
+        }
+      }
     },
   },
   async mounted() {
@@ -137,25 +167,39 @@ export default {
       }
       const idx = this.options.findIndex((item) => item[this.valueField] === this.internalValue)
       if (idx !== -1) {
-        this.onSelect(idx)
+        this.select(idx)
       }
     }
   },
   methods: {
-    async fetch() {
-      if (this.url) {
+    async fetch(query = this.externalValue) {
+      if (this.url && !this.loading) {
         const params = {
           ...this.filterProps,
           ...{
-            query: this.externalValue,
+            query,
             limit: this.limit,
             sort: this.sort || this.textField,
             dir: this.dir,
             combo: true,
           },
         }
+        this.loading = true
         const {data: res} = await this.$axios.get(this.url, {params})
         this.options = res.rows
+        this.loading = false
+      }
+    },
+    reset() {
+      this.internalValue = ''
+      this.externalValue = ''
+    },
+    select(idx) {
+      const item = this.options[idx]
+      if (item) {
+        this.internalValue = item[this.valueField]
+        this.externalValue = item[this.textField]
+        return item
       }
     },
     toggleDropdown(e) {
@@ -178,13 +222,13 @@ export default {
       return this.dropdown
     },
     async onInput(value) {
-      this.$emit('input', value)
       if (!value.length) {
-        this.onReset()
+        this.reset()
         if (!this.lazy) {
           await this.fetch()
         }
       } else {
+        this.internalValue = ''
         await this.fetch()
         this.showDropdown()
       }
@@ -196,17 +240,14 @@ export default {
       }
     },
     onSelect(idx) {
-      const item = this.options[idx]
+      const item = this.select(idx)
       if (item) {
         this.$emit('select', item)
-        this.internalValue = item[this.valueField]
-        this.externalValue = item[this.textField]
       }
     },
     onReset() {
       this.$emit('reset')
-      this.internalValue = ''
-      this.externalValue = ''
+      this.reset()
       this.hideDropdown()
       if (!this.lazy) {
         this.fetch()

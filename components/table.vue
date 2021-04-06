@@ -222,6 +222,7 @@ export default {
           }
           try {
             await this.$axios.delete(this.url, {params})
+            this.$emit('delete')
             this.refresh()
           } catch (e) {}
         }
