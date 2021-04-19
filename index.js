@@ -14,7 +14,7 @@ export function findEnv(dir, files = ['.env.local', '.env', '.env.dist']) {
   return false
 }
 
-export function loadEnv(file = null, config = {}) {
+export function loadEnv(file, config = {}) {
   config.path = file
   return require('dotenv').config(config).parsed
 }
