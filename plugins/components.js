@@ -6,6 +6,7 @@ import VespChangeLocale from '@vesp/frontend/components/change-locale.vue'
 import VespInputComboBox from '@vesp/frontend/components/inputs/combo-box.vue'
 import VespInputRemoteLinks from '@vesp/frontend/components/inputs/remote-links.vue'
 import VespInputDatePicker from '@vesp/frontend/components/inputs/date-picker.vue'
+import VespInputTextMask from '@vesp/frontend/components/inputs/text-mask.vue'
 
 Vue.component('VespTable', VespTable)
 Vue.component('VespModal', VespModal)
@@ -13,3 +14,4 @@ Vue.component('VespChangeLocale', VespChangeLocale)
 Vue.component('VespInputComboBox', VespInputComboBox)
 Vue.component('VespInputRemoteLinks', VespInputRemoteLinks)
 Vue.component('VespInputDatePicker', VespInputDatePicker)
+Vue.component('VespInputTextMask', VespInputTextMask)

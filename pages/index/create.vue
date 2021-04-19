@@ -13,7 +13,13 @@
         <b-form-textarea v-model="record.body" rows="5" required />
       </b-form-group>
 
-      <vesp-input-date-picker v-model="record.date" type="date" />
+      <b-form-group>
+        <vesp-input-date-picker v-model="record.date" type="datetime" />
+      </b-form-group>
+
+      <b-form-group>
+        <vesp-input-text-mask v-model="record.phone" required :state="!!(record.phone && record.phone.length === 12)" />
+      </b-form-group>
 
       <b-form-group :label="$t('components.table.columns.body')">
         <b-form-textarea v-model="record.body" rows="5" required />
@@ -24,12 +30,13 @@
 
 <script>
 import VespInputDatePicker from '@/components/inputs/date-picker'
+import VespInputTextMask from '@/components/inputs/text-mask'
 import VespModal from '~/components/modal'
 import {url} from '~/pages/index'
 
 export default {
   name: 'CreatePage',
-  components: {VespInputDatePicker, VespModal},
+  components: {VespInputDatePicker, VespInputTextMask, VespModal},
   data() {
     return {
       url,

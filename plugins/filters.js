@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import {conformToMask} from 'text-mask-core'
 
 export default ({app}) => {
   const locale = app.i18n.locale === 'en' ? 'en-GB' : app.i18n.locale
@@ -45,5 +46,19 @@ export default ({app}) => {
     const i = Math.floor(Math.log(value) / Math.log(k))
 
     return parseFloat((value / k ** i).toFixed(dm)) + ' ' + sizes[i]
+  })
+
+  Vue.filter('mask', (value, mask = '+41 __ ___ __ __', config = {guide: false, placeholderChar: '_'}) => {
+    if (!process.client) {
+      return value
+    }
+
+    const maskArray = Array.isArray(mask)
+      ? mask
+      : [...mask].map((char) => {
+          return new RegExp(config.placeholderChar).test(char) ? /\d/ : char
+        })
+
+    return conformToMask(value, maskArray, config).conformedValue
   })
 }
