@@ -13,6 +13,7 @@
     :hide-header="hideHeader"
     :hide-footer="hideFooter"
     :visible="visible"
+    :centered="centered"
     v-on="listeners"
   >
     <template #default>
@@ -106,6 +107,10 @@ export default {
     visible: {
       type: Boolean,
       default: true,
+    },
+    centered: {
+      type: Boolean,
+      default: false,
     },
     beforeSubmit: {
       type: Function,
