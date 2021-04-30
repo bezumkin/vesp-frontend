@@ -151,24 +151,16 @@ export default {
         }
       }
     },
+    internalValue(newValue) {
+      this.setValue(newValue)
+    },
   },
   async mounted() {
     if (!this.lazy) {
       await this.fetch()
     }
     if (this.internalValue) {
-      if (this.options.findIndex((item) => item[this.valueField] === this.internalValue) === -1) {
-        const params = {combo: true}
-        params[this.valueField] = this.internalValue
-        const {data: res} = await this.$axios.get(this.url, {params})
-        if (res[this.valueField] === this.internalValue) {
-          this.options.push(res)
-        }
-      }
-      const idx = this.options.findIndex((item) => item[this.valueField] === this.internalValue)
-      if (idx !== -1) {
-        this.select(idx)
-      }
+      this.setValue(this.internalValue)
     }
   },
   methods: {
@@ -281,6 +273,24 @@ export default {
         e.stopPropagation()
         e.preventDefault()
         this.hideDropdown()
+      }
+    },
+    async setValue(value) {
+      if (!value) {
+        this.reset()
+      } else {
+        if (this.options.findIndex((item) => item[this.valueField] === value) === -1) {
+          const params = {combo: true}
+          params[this.valueField] = value
+          const {data: res} = await this.$axios.get(this.url, {params})
+          if (res[this.valueField] === value) {
+            this.options.push(res)
+          }
+        }
+        const idx = this.options.findIndex((item) => item[this.valueField] === value)
+        if (idx !== -1) {
+          this.select(idx)
+        }
       }
     },
   },
