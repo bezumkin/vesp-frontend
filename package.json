@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "name": "@vesp/frontend",
-  "version": "0.5.3",
+  "version": "0.6.2",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -44,6 +44,7 @@
     "prettier": "^2.2.1",
     "sass-loader": "^10.1.1",
     "text-mask-core": "^5.1.2",
+    "vanilla-picker": "^2.11.2",
     "vue2-datepicker": "^3.9.0"
   },
   "files": [

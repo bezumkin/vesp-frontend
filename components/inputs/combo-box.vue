@@ -83,6 +83,10 @@ export default {
       type: String,
       default: 'No results',
     },
+    autofocus: {
+      type: Boolean,
+      default: false,
+    },
     placeholder: {
       type: String,
       default: '',
@@ -129,6 +133,7 @@ export default {
       return {
         type: this.type,
         inputmode: this.inputmode,
+        autofocus: this.autofocus,
         placeholder: this.placeholder,
         required: this.required,
         readonly: this.readonly,

@@ -1,0 +1,9 @@
+.vesp-color-picker {
+  .picker_wrapper.layout_default {
+    .picker {
+      &_sample, &_sl, &_slider {
+        border-radius: $border-radius;
+      }
+    }
+  }
+}
