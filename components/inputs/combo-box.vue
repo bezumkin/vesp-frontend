@@ -11,9 +11,11 @@
         @keydown="onKeydown"
       />
       <template #append>
-        <b-button :disabled="!options.length || disabled || readonly" @click.prevent="toggleDropdown">
-          <fa icon="caret-down" />
-        </b-button>
+        <slot name="append" v-bind="{toggle: toggleDropdown, disabled, readonly, options}">
+          <b-button :disabled="!options.length || disabled || readonly" @click.prevent="toggleDropdown">
+            <fa icon="caret-down" />
+          </b-button>
+        </slot>
       </template>
     </b-input-group>
 
@@ -25,8 +27,11 @@
         :key="item[valueField]"
         :class="{'vesp-combo-list-item': true, selected: selected === idx}"
         @click="onSelect(idx)"
-        v-text="item[textField]"
-      />
+      >
+        <slot name="default" v-bind="{item}">
+          {{ item[textField] }}
+        </slot>
+      </li>
     </ul>
   </section>
 </template>
@@ -185,6 +190,7 @@ export default {
         const {data: res} = await this.$axios.get(this.url, {params})
         this.options = res.rows
         this.loading = false
+        this.$emit('load', this.options)
       }
     },
     reset() {
