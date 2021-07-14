@@ -203,7 +203,11 @@ export default {
     goBack() {
       const idx = this.$route.matched.findIndex((item) => item.name === this.$route.name)
       if (idx > -1 && this.$route.matched[idx].parent) {
-        this.$router.push({name: this.$route.matched[idx].parent.name})
+        this.$router.push({
+          name: this.$route.matched[idx].parent.name,
+          params: this.$route.params,
+          query: this.$route.query,
+        })
       } else {
         this.$router.go(-1)
       }
