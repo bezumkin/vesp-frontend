@@ -2,7 +2,7 @@
   <section class="vesp-color-picker">
     <div ref="picker">
       <slot name="picker">
-        <div :style="{height: myHeight, background: myValue}" class="border-1 rounded" style="cursor: pointer" />
+        <div :style="{height: myHeight, background: myValue}" class="border rounded" style="cursor: pointer" />
       </slot>
     </div>
     <slot name="input" v-bind="{value: myValue, props: inputProps}">

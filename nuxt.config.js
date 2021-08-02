@@ -64,7 +64,7 @@ export default {
     strategy: 'no_prefix',
     locales: [
       {code: 'en', title: 'English'},
-      {code: 'de', title: 'Deutsche'},
+      {code: 'de', title: 'Deutsch'},
       {code: 'ru', title: 'Русский'},
     ],
     defaultLocale: 'en',
