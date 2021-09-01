@@ -51,7 +51,7 @@
       :fields="tFields"
       :class="tableClass"
       :tbody-tr-class="rowClass"
-      :current-page.sync="page"
+      :current-page.sync="tPage"
       :per-page.sync="tLimit"
       :sort-by.sync="tSort"
       :sort-direction.sync="tDir"
@@ -86,7 +86,7 @@
       <b-row class="b-table-pagination justify-content-center justify-content-md-start mt-5 align-items-center">
         <b-pagination
           v-if="totalRows > limit"
-          v-model="page"
+          v-model="tPage"
           class="m-0"
           :total-rows="totalRows"
           :per-page="limit"
@@ -112,6 +112,10 @@
 export default {
   name: 'VespTable',
   props: {
+    value: {
+      type: Number,
+      default: null,
+    },
     url: {
       type: String,
       required: true,
@@ -235,7 +239,7 @@ export default {
   },
   data() {
     return {
-      page: 1,
+      internalValue: 1,
       busy: false,
       totalRows: 0,
       items: (ctx) => {
@@ -245,6 +249,15 @@ export default {
     }
   },
   computed: {
+    tPage: {
+      get() {
+        return this.value === null ? this.internalValue : this.value
+      },
+      set(newValue) {
+        this.internalValue = newValue
+        this.$emit('input', newValue)
+      },
+    },
     tSort: {
       get() {
         return this.sort
