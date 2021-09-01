@@ -4,6 +4,9 @@
       &_sample, &_sl, &_slider {
         border-radius: $border-radius;
       }
+      &_sample {
+        overflow: hidden;
+      }
     }
   }
 }
