@@ -12,7 +12,7 @@
       />
       <template #append>
         <slot name="append" v-bind="{toggle: toggleDropdown, disabled, readonly, options}">
-          <b-button :disabled="!options.length || disabled || readonly" @click.prevent="toggleDropdown">
+          <b-button :disabled="!options.length || disabled || readonly" tabindex="-1" @click.prevent="toggleDropdown">
             <fa icon="caret-down" />
           </b-button>
         </slot>
@@ -26,7 +26,7 @@
         v-else
         :key="item[valueField]"
         :class="{'vesp-combo-list-item': true, selected: selected === idx}"
-        @click="onSelect(idx)"
+        @click="(e) => onSelect(idx, e)"
       >
         <slot name="default" v-bind="{item}">
           {{ item[textField] }}
@@ -242,7 +242,10 @@ export default {
         this.onSelect(0)
       }
     },
-    onSelect(idx) {
+    onSelect(idx, e) {
+      if (e) {
+        this.$refs.input.$el.focus()
+      }
       const item = this.select(idx)
       if (item) {
         this.$emit('select', item)
@@ -259,7 +262,6 @@ export default {
       }
     },
     onKeydown(e) {
-      this.$emit('keydown', e)
       if (e.key === 'ArrowDown' && !this.isDropdownVisible() && this.options.length) {
         this.showDropdown()
       }
@@ -285,6 +287,7 @@ export default {
         e.preventDefault()
         this.hideDropdown()
       }
+      this.$emit('keydown', e)
     },
     async setValue(value) {
       if (!value) {
