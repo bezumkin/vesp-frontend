@@ -10,7 +10,7 @@ export default {
       {name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'},
     ],
   },
-  modules: ['@nuxtjs/axios', '@nuxtjs/toast', 'bootstrap-vue/nuxt', 'nuxt-i18n'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/toast', '@nuxtjs/i18n', 'bootstrap-vue/nuxt'],
   buildModules: ['@nuxtjs/style-resources', '@nuxtjs/fontawesome', '@nuxtjs/date-fns', '@nuxtjs/eslint-module'],
   build: {
     extractCSS: process.env.NODE_ENV === 'production',
