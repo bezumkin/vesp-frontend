@@ -14,6 +14,16 @@ export default {
   buildModules: ['@nuxtjs/style-resources', '@nuxtjs/fontawesome', '@nuxtjs/date-fns', '@nuxtjs/eslint-module'],
   build: {
     extractCSS: process.env.NODE_ENV === 'production',
+    loaders: {
+      sass: {
+        implementation: require('sass'),
+        sassOptions: {quietDeps: true},
+      },
+      scss: {
+        implementation: require('sass'),
+        sassOptions: {quietDeps: true},
+      },
+    },
   },
   css: ['~/assets/scss/index.scss'],
   styleResources: {
