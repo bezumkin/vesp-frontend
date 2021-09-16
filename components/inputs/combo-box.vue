@@ -29,7 +29,7 @@
         @click="(e) => onSelect(idx, e)"
       >
         <slot name="default" v-bind="{item}">
-          {{ item[textField] }}
+          {{ formatValue(item) }}
         </slot>
       </li>
     </ul>
@@ -112,6 +112,12 @@ export default {
       type: Object,
       default() {
         return {}
+      },
+    },
+    formatValue: {
+      type: Function,
+      default(item) {
+        return item[this.textField]
       },
     },
   },
@@ -201,7 +207,7 @@ export default {
       const item = this.options[idx]
       if (item) {
         this.internalValue = item[this.valueField]
-        this.externalValue = item[this.textField]
+        this.externalValue = this.formatValue(item)
         return item
       }
     },
