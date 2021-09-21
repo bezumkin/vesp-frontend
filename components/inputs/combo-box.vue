@@ -172,7 +172,7 @@ export default {
         const {data: res} = await this.$axios.get(this.url, {params})
         this.options = res.rows
         this.loading = false
-        this.$emit('load', this.options)
+        this.$emit('load', res.rows, res.total)
       }
     },
     reset() {
