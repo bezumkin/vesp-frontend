@@ -19,38 +19,38 @@
       </template>
     </b-input-group>
 
-    <ul :class="{'vesp-combo-list': true, show: dropdown}">
-      <li v-if="!options.length" class="alert alert-info m-0" @click="hideDropdown" v-text="emptyText" />
-      <li
-        v-for="(item, idx) in options"
-        v-else
-        :key="item[valueField]"
-        :class="{'vesp-combo-list-item': true, selected: selected === idx}"
-        @click="(e) => onSelect(idx, e)"
-      >
-        <slot name="default" v-bind="{item}">
-          {{ formatValue(item) }}
-        </slot>
-      </li>
+    <ul :class="{'vesp-combo-list dropdown-menu': true, show: dropdown}">
+      <slot v-if="!options.length" name="no-results" v-bind="{hideDropdown, emptyText}">
+        <li class="alert alert-info m-0" @click="hideDropdown" v-text="emptyText" />
+      </slot>
+      <template v-else>
+        <slot name="list-header" v-bind="{hideDropdown}" />
+        <b-dropdown-item
+          v-for="(item, idx) in options"
+          :key="item[valueField]"
+          :class="{'vesp-combo-list-item': true, selected: selected === idx}"
+          @click="(e) => onSelect(idx, e)"
+        >
+          <slot name="default" v-bind="{item}">
+            {{ formatValue(item) }}
+          </slot>
+        </b-dropdown-item>
+        <slot name="list-footer" v-bind="{hideDropdown}" />
+      </template>
     </ul>
   </section>
 </template>
 
 <script>
+import {BFormInput} from 'bootstrap-vue'
+
 export default {
   name: 'VespInputComboBox',
   props: {
+    ...BFormInput.extendOptions.props,
     value: {
       type: [String, Number],
       default: '',
-    },
-    type: {
-      type: String,
-      default: 'text',
-    },
-    inputmode: {
-      type: String,
-      default: 'text',
     },
     url: {
       type: String,
@@ -76,10 +76,6 @@ export default {
       type: String,
       default: 'asc',
     },
-    lazy: {
-      type: Boolean,
-      default: false,
-    },
     forceSelect: {
       type: Boolean,
       default: false,
@@ -87,26 +83,6 @@ export default {
     emptyText: {
       type: String,
       default: 'No results',
-    },
-    autofocus: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    readonly: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
     },
     filterProps: {
       type: Object,
