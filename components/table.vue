@@ -83,7 +83,7 @@
     </b-table>
 
     <slot name="footer">
-      <b-row class="b-table-pagination justify-content-center justify-content-md-start mt-5 align-items-center">
+      <b-row no-gutters align-v="center" align-h="center" class="b-table-pagination justify-content-md-start mt-5">
         <b-pagination
           v-if="totalRows > limit"
           v-model="tPage"
@@ -94,8 +94,7 @@
         />
 
         <b-btn class="ml-2" @click.prevent="refresh">
-          <b-spinner v-if="busy" small style="vertical-align: middle" />
-          <fa v-else icon="sync" />
+          <fa icon="sync" :spin="busy" />
         </b-btn>
 
         <div class="col-12 col-md-auto mt-2 mt-md-0 ml-md-2 text-center">

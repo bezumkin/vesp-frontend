@@ -41,7 +41,6 @@ export default {
       'ModalPlugin',
       'PaginationPlugin',
       'ButtonPlugin',
-      'SpinnerPlugin',
       'OverlayPlugin',
       'FormPlugin',
       'FormGroupPlugin',
