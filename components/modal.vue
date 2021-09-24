@@ -1,21 +1,5 @@
 <template>
-  <b-modal
-    ref="modal"
-    class="vesp-modal"
-    :title="title"
-    :size="size"
-    :ok-variant="okVariant"
-    :ok-title="okTitle"
-    :cancel-variant="cancelVariant"
-    :cancel-title="cancelTitle"
-    :no-close-on-esc="noCloseOnEsc"
-    :no-close-on-backdrop="noCloseOnBackdrop"
-    :hide-header="hideHeader"
-    :hide-footer="hideFooter"
-    :visible="visible"
-    :centered="centered"
-    v-on="listeners"
-  >
+  <b-modal ref="modal" class="vesp-modal" v-bind="$props" v-on="listeners">
     <template #default>
       <b-overlay :opacity="0.5" :show="loading">
         <b-form ref="form" @submit.prevent="submit">
@@ -25,21 +9,22 @@
       </b-overlay>
     </template>
     <template #modal-footer="{cancel}">
-      <b-row class="w-100 mt-2 justify-content-between">
-        <b-btn :variant="cancelVariant" :disabled="loading" @click="cancel" v-text="cancelTitle" />
-        <b-btn v-if="url" :variant="okVariant" :disabled="loading" @click="formSubmit" v-text="okTitle" />
-      </b-row>
+      <b-btn :variant="cancelVariant" :disabled="loading" @click="cancel" v-text="cancelTitle" />
+      <b-btn v-if="url" :variant="okVariant" :disabled="loading" @click="formSubmit" v-text="okTitle" />
     </template>
     <template v-for="(_, slotName) in $scopedSlots" :slot="slotName" slot-scope="slotData">
-      <slot :name="slotName" v-bind="{...slotData, record, loading, submit}" />
+      <slot :name="slotName" v-bind="{...slotData, record, loading, submit, formSubmit}" />
     </template>
   </b-modal>
 </template>
 
 <script>
+import {BModal} from 'bootstrap-vue'
+
 export default {
   name: 'VespModal',
   props: {
+    ...BModal.extendOptions.props,
     url: {
       type: String,
       default: null,
@@ -51,16 +36,6 @@ export default {
         return {}
       },
     },
-    title: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    size: {
-      type: String,
-      required: false,
-      default: 'md',
-    },
     updateKey: {
       type: String,
       required: false,
@@ -68,13 +43,13 @@ export default {
         return this.url ? this.url.split('/').join('-') : null
       },
     },
-    okVariant: {
-      type: String,
-      default: 'primary',
+    visible: {
+      type: Boolean,
+      default: true,
     },
-    cancelVariant: {
-      type: String,
-      default: 'secondary',
+    footerClass: {
+      type: [Object, Array, String],
+      default: 'pt-2 justify-content-between',
     },
     okTitle: {
       type: String,
@@ -87,30 +62,6 @@ export default {
       default() {
         return this.$t('actions.cancel')
       },
-    },
-    noCloseOnEsc: {
-      type: Boolean,
-      default: false,
-    },
-    noCloseOnBackdrop: {
-      type: Boolean,
-      default: false,
-    },
-    hideHeader: {
-      type: Boolean,
-      default: false,
-    },
-    hideFooter: {
-      type: Boolean,
-      default: false,
-    },
-    visible: {
-      type: Boolean,
-      default: true,
-    },
-    centered: {
-      type: Boolean,
-      default: false,
     },
     beforeSubmit: {
       type: Function,
@@ -142,7 +93,7 @@ export default {
       },
     },
     listeners() {
-      const listeners = this.$listeners
+      const listeners = {...this.$listeners}
       if (!listeners.hidden) {
         listeners.hidden = this.goBack
       }
@@ -190,14 +141,17 @@ export default {
             if (this.updateKey) {
               this.$root.$emit(`app::${this.updateKey}::update`, data)
             }
-            if (this.$refs.modal) {
-              this.$refs.modal.hide()
-            }
+            this.cancel()
           }
         }
       } catch (err) {
       } finally {
         this.loading = false
+      }
+    },
+    hide() {
+      if (this.$refs.modal) {
+        this.$refs.modal.hide()
       }
     },
     goBack() {
