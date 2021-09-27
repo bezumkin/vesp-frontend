@@ -141,7 +141,7 @@ export default {
             if (this.updateKey) {
               this.$root.$emit(`app::${this.updateKey}::update`, data)
             }
-            this.cancel()
+            this.hide()
           }
         }
       } catch (err) {
