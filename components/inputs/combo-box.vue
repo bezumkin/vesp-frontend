@@ -147,6 +147,9 @@ export default {
       this.setValue(newValue)
     },
   },
+  created() {
+    this.filtersHash = JSON.stringify(this.filterProps)
+  },
   async mounted() {
     if (!this.lazy) {
       await this.fetch()
