@@ -107,11 +107,16 @@ export default {
     },
   },
   watch: {
+    value(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.textMask.update(newValue, this.textMaskConfig)
+        this.internalValue = this.textMask.state.previousConformedValue
+      }
+    },
     async mask() {
       this.internalValue = ''
       this.externalValue = ''
       await this.update()
-      this.$refs.input.focus()
     },
   },
   async mounted() {
