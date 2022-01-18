@@ -28,7 +28,8 @@
         <b-dropdown-item
           v-for="(item, idx) in options"
           :key="item[valueField]"
-          :class="{'vesp-combo-list-item': true, selected: selected === idx}"
+          :class="{'vesp-combo-list-item': true}"
+          :active="selected === idx"
           @click="(e) => onSelect(idx, e)"
         >
           <slot name="default" v-bind="{item}">
@@ -138,7 +139,8 @@ export default {
 
       await this.fetch('')
       if (this.internalValue) {
-        if (this.options.findIndex((item) => item[this.valueField] === this.internalValue) === -1) {
+        // eslint-disable-next-line eqeqeq
+        if (this.options.findIndex((item) => item[this.valueField] == this.internalValue) === -1) {
           this.reset()
         }
       }
@@ -278,15 +280,18 @@ export default {
       if (!value) {
         this.reset()
       } else {
-        if (this.options.findIndex((item) => item[this.valueField] === value) === -1) {
-          const params = {combo: true}
+        // eslint-disable-next-line eqeqeq
+        if (this.options.findIndex((item) => item[this.valueField] == value) === -1) {
+          const params = {...this.filterProps, combo: true}
           params[this.valueField] = value
           const {data: res} = await this.$axios.get(this.url, {params})
-          if (res[this.valueField] === value) {
+          // eslint-disable-next-line eqeqeq
+          if (res[this.valueField] == value) {
             this.options.push(res)
           }
         }
-        const idx = this.options.findIndex((item) => item[this.valueField] === value)
+        // eslint-disable-next-line eqeqeq
+        const idx = this.options.findIndex((item) => item[this.valueField] == value)
         if (idx !== -1) {
           this.select(idx)
         }
