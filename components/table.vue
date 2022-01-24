@@ -308,8 +308,8 @@ export default {
     tFilters: {
       deep: true,
       handler() {
-        if (this.page !== 1) {
-          this.page = 1
+        if (this.tPage !== 1) {
+          this.tPage = 1
         }
         this.refresh()
       },

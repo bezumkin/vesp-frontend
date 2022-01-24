@@ -1,7 +1,10 @@
 .vesp-table {
   .b-table {
-    td.actions {
+    th, td {
       vertical-align: middle;
+    }
+
+    td.actions {
       white-space: nowrap;
       text-align: right;
 

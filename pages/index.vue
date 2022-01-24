@@ -3,6 +3,7 @@
     <b-container class="mt-5 mb-5">
       <vesp-table
         ref="table"
+        v-model="page"
         :url="url"
         :fields="fields"
         :filters="filters"
@@ -31,6 +32,7 @@ export default {
       filters: {
         query: '',
       },
+      page: 1,
       updateKey: 'json-posts',
       sort: 'title',
       dir: 'desc',
@@ -61,9 +63,11 @@ export default {
   methods: {
     // Emulate response from Vesp Core
     onLoad(items) {
+      if (this.filters.query) {
+        items = items.filter((row) => row.title.includes(this.filters.query) || row.body.includes(this.filters.query))
+      }
       const limit = this.limit
-      const page = this.$refs.table.page
-      const offset = (page - 1) * limit
+      const offset = (this.page - 1) * limit
 
       return {
         rows: items.slice(offset, offset + limit),
