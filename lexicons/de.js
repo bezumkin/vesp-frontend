@@ -15,7 +15,7 @@ export default {
     table: {
       no_data: 'Nichts zu zeigen',
       no_results: 'Nichts gefunden',
-      records: 'Keine Einträge | 1 Datensatz | {totalRows} Einträge',
+      records: 'Keine Einträge | 1 Datensatz | {total} Einträge',
       query: 'Suche...',
       columns: {
         id: 'Id',

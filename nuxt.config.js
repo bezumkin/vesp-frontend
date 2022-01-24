@@ -66,7 +66,7 @@ export default {
   fontawesome: {
     component: 'fa',
     icons: {
-      solid: ['faSync', 'faEdit', 'faTimes', 'faPlus', 'faRedo', 'faFilter', 'faCaretDown', 'faCalendarAlt'],
+      solid: ['faSync', 'faEdit', 'faTimes', 'faPlus', 'faRedo', 'faFilter', 'faCaretDown', 'faCalendarAlt', 'faEye'],
     },
   },
   i18n: {
