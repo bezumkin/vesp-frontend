@@ -293,7 +293,7 @@ export default {
         // eslint-disable-next-line eqeqeq
         const idx = this.options.findIndex((item) => item[this.valueField] == value)
         if (idx !== -1) {
-          this.select(idx)
+          this.onSelect(idx)
         }
       }
     },
