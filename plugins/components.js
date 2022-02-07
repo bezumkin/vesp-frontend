@@ -8,6 +8,7 @@ import VespInputRemoteLinks from '@vesp/frontend/components/inputs/remote-links.
 import VespInputDatePicker from '@vesp/frontend/components/inputs/date-picker.vue'
 import VespInputTextMask from '@vesp/frontend/components/inputs/text-mask.vue'
 import VespInputColorPicker from '@vesp/frontend/components/inputs/color-picker.vue'
+import VespInputPassword from '@vesp/frontend/components/inputs/password.vue'
 
 Vue.component('VespTable', VespTable)
 Vue.component('VespModal', VespModal)
@@ -17,3 +18,4 @@ Vue.component('VespInputRemoteLinks', VespInputRemoteLinks)
 Vue.component('VespInputDatePicker', VespInputDatePicker)
 Vue.component('VespInputTextMask', VespInputTextMask)
 Vue.component('VespInputColorPicker', VespInputColorPicker)
+Vue.component('VespInputPassword', VespInputPassword)
