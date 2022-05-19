@@ -3,6 +3,7 @@
 
   &-list {
     width: 100%;
+    overflow-x: auto;
 
     .alert {
       border: none;
