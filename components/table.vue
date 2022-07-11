@@ -389,7 +389,17 @@ export default {
       }
       const tmp = {}
       for (const key of Object.keys(action.map)) {
-        tmp[key] = item[action.map[key]]
+        const val = action.map[key]
+        if (/\./.test(val)) {
+          const keys = val.split('.')
+          let local = {...item}
+          for (const i of keys) {
+            local = local[i]
+          }
+          tmp[key] = local
+        } else {
+          tmp[key] = item[val]
+        }
       }
       return {name: action.route, params: tmp, query: action.query || {}}
     },
