@@ -15,7 +15,7 @@ export default {
     table: {
       no_data: 'Нет данных для вывода',
       no_results: 'Результатов не найдено',
-      records: 'Записей нет | 1 запись | {total} записи | {total} записей',
+      records: 'Записей нет | {total} запись | {total} записи | {total} записей',
       query: 'Поиск...',
       columns: {
         id: 'Id',
