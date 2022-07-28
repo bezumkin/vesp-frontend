@@ -77,6 +77,10 @@ export default {
       type: String,
       default: 'patch',
     },
+    primaryKey: {
+      type: [String, Array],
+      default: 'id',
+    },
   },
   data() {
     return {
@@ -134,7 +138,18 @@ export default {
             this.$toast.error(record)
           } else {
             this.loading = true
-            const method = record.id ? this.actionEdit : this.actionCreate
+            let isEdit = false
+            if (Array.isArray(this.primaryKey)) {
+              for (const i of this.primaryKey) {
+                if (record[i] && String(record[i]).length) {
+                  isEdit = true
+                }
+              }
+            } else if (record[this.primaryKey]) {
+              isEdit = true
+            }
+
+            const method = isEdit ? this.actionEdit : this.actionCreate
             const {data} = await this.$axios[method](this.url, record)
             this.$emit('after-submit', data)
 
