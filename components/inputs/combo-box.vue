@@ -225,7 +225,7 @@ export default {
     },
     onChange(value) {
       this.$emit('change', value)
-      if (value && !this.internalValue && this.options.length) {
+      if (value && this.forceSelect && !this.internalValue && this.options.length) {
         this.onSelect(0)
       }
     },
