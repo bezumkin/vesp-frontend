@@ -174,10 +174,15 @@ export default {
           },
         }
         this.loading = true
-        const {data: res} = await this.$axios.get(this.url, {params})
-        this.options = res.rows
-        this.loading = false
-        this.$emit('load', res.rows, res.total)
+        try {
+          const {data: res} = await this.$axios.get(this.url, {params})
+          this.options = res.rows
+          this.$emit('load', res.rows, res.total)
+        } catch (e) {
+          this.$emit('failure', e)
+        } finally {
+          this.loading = false
+        }
       }
     },
     reset() {
