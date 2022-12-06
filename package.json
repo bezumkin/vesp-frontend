@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "name": "@vesp/frontend",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "main": "index.js",
   "repository": {
     "type": "git",
