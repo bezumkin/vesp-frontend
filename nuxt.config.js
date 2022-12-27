@@ -14,6 +14,9 @@ export default {
   buildModules: ['@nuxtjs/style-resources', '@nuxtjs/fontawesome', '@nuxtjs/date-fns', '@nuxtjs/eslint-module'],
   build: {
     extractCSS: process.env.NODE_ENV === 'production',
+    babel: {
+      compact: true,
+    },
     loaders: {
       sass: {
         implementation: require('sass'),
@@ -75,6 +78,7 @@ export default {
       {code: 'en', title: 'English'},
       {code: 'de', title: 'Deutsch'},
       {code: 'ru', title: 'Русский'},
+      {code: 'fr', title: 'Français'},
     ],
     defaultLocale: 'en',
     differentDomains: false,

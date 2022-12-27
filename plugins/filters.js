@@ -1,14 +1,19 @@
 import Vue from 'vue'
+import * as Locales from 'date-fns/locale'
 import {conformToMask} from 'text-mask-core'
 
 export default ({app}) => {
-  const locale = app.i18n.locale === 'en' ? 'en-GB' : app.i18n.locale
+  function getLocale() {
+    const locale = app.i18n ? app.i18n.locale : 'en'
+    // eslint-disable-next-line import/namespace
+    return Locales[locale] || Locales.enUS
+  }
 
   Vue.filter('date', (value, format = 'dd.MM.yyyy') => {
     if (!value) {
       return ''
     }
-    return app.$dateFns.format(new Date(value), format, {locale})
+    return app.$dateFns.format(new Date(value), format, {locale: getLocale()})
   })
 
   Vue.filter('datetime', (value) => {
@@ -26,10 +31,10 @@ export default ({app}) => {
     const now = new Date()
     const date = new Date(value)
     if (app.$dateFns.differenceInSeconds(now, date) > 3600 * 12) {
-      return app.$dateFns.format(date, 'dd MMMM yyyy, HH:mm', {locale})
+      return app.$dateFns.format(date, 'dd MMMM yyyy, HH:mm', {locale: getLocale()})
     }
 
-    return app.$dateFns.formatDistanceToNow(date, {locale, addSuffix: true})
+    return app.$dateFns.formatDistanceToNow(date, {locale: getLocale(), addSuffix: true})
   })
 
   Vue.filter('truncate', (text, length = 120, clamp = '...') => {

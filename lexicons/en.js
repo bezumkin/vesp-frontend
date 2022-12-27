@@ -47,17 +47,6 @@ export default {
       weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       weekdaysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
     },
-    /*
-    upload: {
-      loading: 'Preparing',
-      processing: 'Loading',
-      cancel: 'Cancel',
-      awaiting_size: 'Awaiting file size',
-      sorting_desc: 'You can sort items by drag and drop',
-      records: 'No files | 1 file | {total} files',
-      max_file_size: 'Maximum file size is {filesize}',
-      max_file_size_exceeded: 'File is too large',
-    }, */
   },
   errors: {
     error: 'Error',

@@ -47,17 +47,6 @@ export default {
       weekdaysShort: ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
       weekdaysMin: ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
     },
-    /*
-    upload: {
-      loading: 'Подготовка',
-      processing: 'Загрузка',
-      cancel: 'Отмена',
-      awaiting_size: 'Ожидание размера',
-      sorting_desc: 'Вы можете сотрировать картинки перетаскиванием',
-      records: 'Нет файлов | 1 файл | {total} файла | {total} файлов',
-      max_file_size: 'Максимальный размер файла {filesize}',
-      max_file_size_exceeded: 'Файл слишком большой',
-    }, */
   },
   errors: {
     error: 'Ошибка',

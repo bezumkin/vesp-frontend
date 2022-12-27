@@ -47,17 +47,6 @@ export default {
       weekdaysShort: ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
       weekdaysMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
     },
-    /*
-    upload: {
-      loading: 'Vorbereiten',
-      processing: 'Wird geladen',
-      cancel: 'Stornieren',
-      awaiting_size: 'Warten auf Dateigröße',
-      sorting_desc: 'Sie können Elemente per Drag & Drop sortieren',
-      records: 'Keine Dateien | 1 Datei | {total} Dateien',
-      max_file_size: 'Die maximale Dateigröße beträgt {filesize}',
-      max_file_size_exceeded: 'Datei ist zu groß',
-    }, */
   },
   errors: {
     error: 'Error',
