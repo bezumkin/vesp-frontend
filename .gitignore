@@ -4,6 +4,7 @@
 /.env
 /.env.local
 /.eslintcache
+/dist
 /yarn.lock
 /package-lock.json
 /yarn-error.log
