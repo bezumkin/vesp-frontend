@@ -10,7 +10,11 @@
               v-bind="action"
               :size="action.size || 'md'"
               :class="action.class || (!idx ? 'col-12 col-md-auto' : 'col-12 col-md-auto ml-md-2 mt-2 mt-md-0')"
-              :to="action.route ? {name: action.route, params: action.params || {}, query: action.query || {}} : null"
+              :to="
+                action.route
+                  ? prepareRoute({name: action.route, params: action.params || {}, query: action.query || {}})
+                  : null
+              "
               v-on="action.function ? {click: action.function} : {}"
             >
               <fa :icon="action.icon" /> {{ action.title }}
@@ -385,7 +389,7 @@ export default {
     },
     mapRouteParams(action, item) {
       if (!action.map) {
-        return {name: action.route, params: item, query: action.query || {}}
+        return this.prepareRoute({name: action.route, params: item, query: action.query || {}})
       }
       const tmp = {}
       for (const key of Object.keys(action.map)) {
@@ -401,7 +405,10 @@ export default {
           tmp[key] = item[val]
         }
       }
-      return {name: action.route, params: tmp, query: action.query || {}}
+      return this.prepareRoute({name: action.route, params: tmp, query: action.query || {}})
+    },
+    prepareRoute(route) {
+      return this.$i18n && this.localeRoute ? this.localeRoute(route) : route
     },
     onClick(action, row) {
       if (typeof action.function === 'function') {
