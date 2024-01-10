@@ -36,6 +36,10 @@
         <vesp-input-password v-model="record.password" />
       </b-form-group>
 
+      <b-form-group label="Combo Box">
+        <vesp-input-combo-box ref="combo" v-model="record.combo" :url="url" :on-load="onLoad" />
+      </b-form-group>
+
       <b-form-group :label="$t('components.table.columns.body')">
         <b-form-textarea v-model="record.body" rows="5" required />
       </b-form-group>
@@ -48,12 +52,20 @@ import VespInputDatePicker from '@/components/inputs/date-picker'
 import VespInputTextMask from '@/components/inputs/text-mask'
 import VespInputColorPicker from '@/components/inputs/color-picker'
 import VespInputPassword from '@/components/inputs/password'
+import VespInputComboBox from '@/components/inputs/combo-box'
 import VespModal from '~/components/modal'
 import {url} from '~/pages/index'
 
 export default {
   name: 'CreatePage',
-  components: {VespInputPassword, VespInputDatePicker, VespInputTextMask, VespInputColorPicker, VespModal},
+  components: {
+    VespInputPassword,
+    VespInputDatePicker,
+    VespInputTextMask,
+    VespInputColorPicker,
+    VespInputComboBox,
+    VespModal,
+  },
   data() {
     return {
       url,
@@ -62,10 +74,27 @@ export default {
         date: ['2020-03-05 12:15:55', '2020-03-08 12:15:55'],
         color: '#007bff',
         password: 'Test',
+        combo: '',
         // date: '2020-03-05 12:15:55',
       },
       updateKey: 'json-posts',
     }
+  },
+  methods: {
+    // Emulate response from Vesp Core
+    onLoad(items) {
+      const query = this.$refs.combo.externalValue
+      if (query) {
+        items = items.filter((row) => row.title.includes(query) || row.body.includes(query))
+      }
+      const limit = this.$refs.combo.limit
+      const offset = (this.$refs.combo.page - 1) * limit
+
+      return {
+        rows: items.slice(offset, offset + limit),
+        total: items.length,
+      }
+    },
   },
 }
 </script>

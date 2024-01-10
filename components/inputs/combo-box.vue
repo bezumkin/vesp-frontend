@@ -19,12 +19,12 @@
       </template>
     </b-input-group>
 
-    <ul :class="{'vesp-combo-list dropdown-menu': true, show: dropdown}">
+    <ul :class="{'dropdown-menu vesp-combo-list': true, show: dropdown}">
       <slot v-if="!options.length" name="no-results" v-bind="{hideDropdown, emptyText}">
         <li class="alert alert-info m-0" @click="hideDropdown" v-text="emptyText" />
       </slot>
       <template v-else>
-        <slot name="list-header" v-bind="{hideDropdown}" />
+        <slot name="list-header" v-bind="{hideDropdown, total}" />
         <b-dropdown-item
           v-for="(item, idx) in options"
           :key="item[valueField]"
@@ -36,7 +36,17 @@
             {{ formatValue(item) }}
           </slot>
         </b-dropdown-item>
-        <slot name="list-footer" v-bind="{hideDropdown}" />
+        <slot name="list-footer" v-bind="{hideDropdown, total}">
+          <b-container v-if="total > options.length" class="my-2" @click="(e) => e.stopPropagation()">
+            <b-pagination
+              v-model="page"
+              :per-page="limit"
+              :limit="pageLimit"
+              :total-rows="total"
+              @input="onPagination"
+            />
+          </b-container>
+        </slot>
       </template>
     </ul>
   </section>
@@ -97,6 +107,16 @@ export default {
         return item[this.textField]
       },
     },
+    pageLimit: {
+      type: Number,
+      default: 5,
+    },
+    onLoad: {
+      type: Function,
+      default(items) {
+        return items
+      },
+    },
   },
   data() {
     return {
@@ -106,6 +126,9 @@ export default {
       dropdown: false,
       filtersHash: null,
       loading: false,
+      page: 1,
+      total: 0,
+      skipWatchers: false,
     }
   },
   computed: {
@@ -137,30 +160,43 @@ export default {
       }
       this.filtersHash = hash
 
-      await this.fetch('')
-      if (this.internalValue) {
-        // eslint-disable-next-line eqeqeq
-        if (this.options.findIndex((item) => item[this.valueField] == this.internalValue) === -1) {
-          this.reset()
+      if (!this.lazy) {
+        await this.fetch('')
+        if (this.internalValue) {
+          // eslint-disable-next-line eqeqeq
+          if (this.options.findIndex((item) => item[this.valueField] == this.internalValue) === -1) {
+            this.reset()
+          }
         }
       }
     },
     internalValue(newValue) {
-      this.setValue(newValue)
+      if (!this.skipWatchers) {
+        this.setValue(newValue)
+      }
+    },
+    lazy(newValue) {
+      if (newValue) {
+        this.init()
+      }
     },
   },
   created() {
     this.filtersHash = JSON.stringify(this.filterProps)
   },
-  async mounted() {
-    if (!this.lazy) {
-      await this.fetch()
-    }
-    if (this.internalValue) {
-      this.setValue(this.internalValue)
-    }
+  mounted() {
+    this.init()
   },
   methods: {
+    async init() {
+      if (this.lazy) {
+        return
+      }
+      await this.fetch()
+      if (this.internalValue) {
+        await this.setValue(this.internalValue)
+      }
+    },
     async fetch(query = this.externalValue) {
       if (this.url && !this.loading) {
         const params = {
@@ -170,14 +206,17 @@ export default {
             limit: this.limit,
             sort: this.sort || this.textField,
             dir: this.dir,
+            page: this.page,
             combo: true,
           },
         }
         this.loading = true
         try {
-          const {data: res} = await this.$axios.get(this.url, {params})
-          this.options = res.rows
-          this.$emit('load', res.rows, res.total)
+          let {data: items} = await this.$axios.get(this.url, {params})
+          items = this.onLoad(items)
+          this.options = items.rows
+          this.total = items.total || 0
+          this.$emit('load', this.options, this.total)
         } catch (e) {
           this.$emit('failure', e)
         } finally {
@@ -186,10 +225,12 @@ export default {
       }
     },
     reset() {
+      this.page = 1
       this.internalValue = ''
       this.externalValue = ''
     },
     select(idx) {
+      this.page = 1
       const item = this.options[idx]
       if (item) {
         this.internalValue = item[this.valueField]
@@ -223,9 +264,11 @@ export default {
           await this.fetch()
         }
       } else {
+        this.skipWatchers = true
         this.internalValue = ''
         await this.fetch()
         this.showDropdown()
+        this.skipWatchers = false
       }
     },
     onChange(value) {
@@ -238,9 +281,10 @@ export default {
       if (e) {
         this.$refs.input.$el.focus()
       }
+      const value = this.internalValue
       const item = this.select(idx)
-      if (item) {
-        this.$emit('select', item)
+      if (item && item[this.valueField] !== value) {
+        this.$emit('select', item, this)
       }
     },
     onReset() {
@@ -301,6 +345,10 @@ export default {
           this.onSelect(idx)
         }
       }
+    },
+    onPagination(page) {
+      this.page = page
+      this.fetch(this.internalValue ? '' : this.externalValue)
     },
   },
 }
