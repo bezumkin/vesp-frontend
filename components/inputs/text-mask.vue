@@ -3,7 +3,7 @@
     <b-form-input
       ref="input"
       v-model="internalValue"
-      v-bind="{readonly, disabled, required, autofocus, inputmode, type, state}"
+      v-bind="{readonly, disabled, required, autofocus, autocomplete, inputmode, type, state}"
       :placeholder="internalPlaceholder"
       @input="onInput"
     />
@@ -52,6 +52,10 @@ export default {
       default: '_',
     },
     placeholder: {
+      type: String,
+      default: '',
+    },
+    autocomplete: {
       type: String,
       default: '',
     },
