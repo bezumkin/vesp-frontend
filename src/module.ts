@@ -110,8 +110,6 @@ function getContents(options: ModuleOptions) {
     strings.push(...addIcons(options.sharpIcons, 'sharp'))
   }
 
-  strings.push(`export const options = ${JSON.stringify(options)}`)
-
   const icons = [...new Set(iconsToAdd)].map((key) => `"${key}": ${key}`)
   strings.push(`export const faIcons = {${icons.join(', ')}}`)
 
@@ -207,4 +205,18 @@ export type VespAuthStore = {
   login: Function
   logout: Function
   setToken: Function
+}
+
+declare module '#app' {
+  export interface NuxtApp {
+    $image: (file: VespFile | Record<string, any>, options?: VespFileOptions, prefix?: string) => string
+    $scope: (scopes: string | string[]) => boolean
+  }
+}
+
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    $image: (file: VespFile | Record<string, any>, options?: VespFileOptions, prefix?: string) => string
+    $scope: (scopes: string | string[]) => boolean
+  }
 }

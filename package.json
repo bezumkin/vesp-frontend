@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "name": "@vesp/frontend",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "type": "module",
   "exports": {
     ".": {
