@@ -12,9 +12,7 @@ import {
 } from '@nuxt/kit'
 
 import type {Ref} from 'vue'
-import type {BaseButtonVariant, BaseSize} from 'bootstrap-vue-next/src/types'
-
-const iconsToAdd: string[] = []
+import type {ButtonVariant, Size} from 'bootstrap-vue-next'
 
 export interface ModuleOptions {
   i18n?: NuxtI18nOptions | false
@@ -80,72 +78,30 @@ export default defineNuxtModule<ModuleOptions>({
       })
       addPlugin(resolver.resolve('./runtime/plugins/toast.client'))
     }
-    if (options.icons) {
-      addTemplate({filename: 'vesp.fontawesome.mjs', write: true, getContents: () => getContents(options)})
-      addPlugin(resolver.resolve('./runtime/plugins/fontawesome'))
-    }
 
     addPlugin(resolver.resolve('./runtime/plugins/vesp'))
     addPlugin(resolver.resolve('./runtime/plugins/date-picker.client'))
     await installModule('@bootstrap-vue-next/nuxt')
     await installModule('@pinia/nuxt')
+    await installModule('nuxt3-fontawesome', {
+      component: 'vesp-fa',
+      suffix: false,
+      icons: options.icons,
+      proIcons: options.proIcons,
+      sharpIcons: options.sharpIcons,
+    })
     await addComponentsDir({path: resolver.resolve('./runtime/components'), prefix: 'vesp'})
     addImportsDir(resolver.resolve('./runtime/utils'))
 
     nuxt.hook('modules:done', () => {
-      console.log('Vesp module is ready')
+      console.info('Vesp module is ready')
     })
   },
 })
 
-function getContents(options: ModuleOptions) {
-  const strings = []
-  if (options.icons) {
-    strings.push(...addIcons(options.icons, 'free'))
-  }
-  if (options.proIcons) {
-    strings.push(...addIcons(options.proIcons, 'pro'))
-  }
-  if (options.sharpIcons) {
-    strings.push(...addIcons(options.sharpIcons, 'sharp'))
-  }
-
-  const icons = [...new Set(iconsToAdd)].map((key) => `"${key}": ${key}`)
-  strings.push(`export const faIcons = {${icons.join(', ')}}`)
-
-  return strings.join('\n\n')
-}
-
-function addIcons(iconStyles: {[key in IconStyle]?: string[] | boolean}, type = 'free') {
-  const imports = []
-
-  for (const style in iconStyles) {
-    let icons = iconStyles[style as IconStyle]
-
-    if (icons === true) {
-      icons = [`fa${style[0]}`]
-    }
-
-    if (!icons || !icons.length) {
-      continue
-    }
-
-    const styleIcons = icons.map((icon: string) => {
-      const alias = `${type}Fa${style[0]}${icon[0].toUpperCase()}${icon.slice(1)}`
-      iconsToAdd.push(alias)
-      return `${icon} as ${alias}`
-    })
-
-    const pkgName = `${type}-${style}-svg-icons`
-    imports.push(`import {\n  ${[...new Set(styleIcons)].join(',\n  ')}\n} from '@fortawesome/${pkgName}'`)
-  }
-
-  return imports
-}
-
 export type VespTableAction = {
-  size?: keyof BaseSize
-  variant?: keyof BaseButtonVariant
+  size?: keyof Size
+  variant?: keyof ButtonVariant
   class?: String | Array<string> | Object
   route?: any
   function?: Function

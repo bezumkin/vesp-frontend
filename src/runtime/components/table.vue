@@ -126,10 +126,9 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, watch} from 'vue'
-import type {Breakpoint, TableFieldObject} from 'bootstrap-vue-next/src/types'
+import {computed, type PropType, type Ref, ref, watch} from 'vue'
+import type {Breakpoint, TableField, TableItem} from 'bootstrap-vue-next'
 import type {RouteLocationNamedRaw} from 'vue-router'
-import type {TableItem} from 'bootstrap-vue-next'
 import {useI18n} from 'vue-i18n'
 import type {VespTableAction, VespTableOnLoad} from '../../module'
 import {useCustomFetch, useDelete} from '../utils/use-api'
@@ -145,7 +144,7 @@ const props = defineProps({
     required: true,
   },
   fields: {
-    type: Array as PropType<TableFieldObject[]>,
+    type: Array as PropType<TableField[]>,
     default() {
       return []
     },
