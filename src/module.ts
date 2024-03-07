@@ -83,7 +83,7 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve('./runtime/plugins/date-picker.client'))
     await installModule('@bootstrap-vue-next/nuxt')
     await installModule('@pinia/nuxt')
-    await installModule('nuxt3-fontawesome', {
+    await installModule('@vesp/nuxt-fontawesome', {
       component: 'vesp-fa',
       suffix: false,
       icons: options.icons,
