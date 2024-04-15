@@ -1,6 +1,6 @@
 <template>
   <div class="vesp-input-mask">
-    <b-form-input
+    <BFormInput
       ref="input"
       :model-value="internalValue"
       v-bind="props"

@@ -1,5 +1,5 @@
 <template>
-  <b-form-input v-model="record" v-bind="props" :formatter="formatValue" />
+  <BFormInput v-model="record" v-bind="props" :formatter="formatValue" />
 </template>
 
 <script setup lang="ts">

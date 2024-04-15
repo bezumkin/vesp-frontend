@@ -1,10 +1,10 @@
 <template>
   <section class="vesp-table">
     <slot name="header">
-      <b-row class="align-items-center mb-3">
-        <b-col md="4">
+      <BRow class="align-items-center mb-3">
+        <BCol md="4">
           <slot name="header-start">
-            <b-button
+            <BButton
               v-for="(action, idx) in headerActions"
               :key="idx"
               :size="action.size || 'md'"
@@ -13,31 +13,31 @@
               :to="action.route"
               @click="action.function"
             >
-              <vesp-fa v-if="action.icon" :icon="action.icon" fixed-width /> {{ action.title }}
-            </b-button>
+              <VespFa v-if="action.icon" :icon="action.icon" fixed-width /> {{ action.title }}
+            </BButton>
           </slot>
-        </b-col>
+        </BCol>
 
-        <b-col md="4">
+        <BCol md="4">
           <slot name="header-middle"></slot>
-        </b-col>
+        </BCol>
 
-        <b-col md="4" class="mt-2 mt-md-0">
+        <BCol md="4" class="mt-2 mt-md-0">
           <slot name="header-end">
-            <b-input-group v-if="hasQuery">
+            <BInputGroup v-if="hasQuery">
               <template #append>
-                <b-button :disabled="!tFilters.query" @click="tFilters.query = null">
-                  <vesp-fa icon="times" fixed-width />
-                </b-button>
+                <BButton :disabled="!tFilters.query" @click="tFilters.query = null">
+                  <VespFa icon="times" fixed-width />
+                </BButton>
               </template>
-              <b-form-input v-model="tFilters.query" :placeholder="t('components.table.query')" />
-            </b-input-group>
+              <BFormInput v-model="tFilters.query" :placeholder="t('components.table.query')" />
+            </BInputGroup>
           </slot>
-        </b-col>
-      </b-row>
+        </BCol>
+      </BRow>
     </slot>
 
-    <b-table
+    <BTable
       :items="items"
       :fields="tFields"
       :class="tableClass"
@@ -56,7 +56,7 @@
     >
       <template #cell(actions)="{item}">
         <template v-for="(action, idx) in tableActions">
-          <b-button
+          <BButton
             v-if="typeof action.isActive !== 'function' || action.isActive(item) === true"
             :key="idx"
             :size="action.size || 'sm'"
@@ -65,22 +65,22 @@
             :to="mapRouteParams(action, item)"
             @click="onClick(action, item)"
           >
-            <vesp-fa v-if="action.icon" :icon="action.icon" fixed-width />
+            <VespFa v-if="action.icon" :icon="action.icon" fixed-width />
             <template v-else>{{ action.title }}</template>
-          </b-button>
+          </BButton>
         </template>
       </template>
 
       <template v-for="slotName in Object.keys($slots)" #[slotName]="slotProps">
         <slot v-if="slotName !== 'default'" :name="slotName" v-bind="slotProps" />
       </template>
-    </b-table>
+    </BTable>
 
     <slot name="footer" v-bind="{refresh, total, page: tPage, limit, loading}">
-      <b-row class="mt-5 align-items-center justify-content-center justify-content-md-start gap-3" no-gutters>
-        <b-col cols="12" md="auto" class="d-flex justify-content-center">
+      <BRow class="mt-5 align-items-center justify-content-center justify-content-md-start gap-3" no-gutters>
+        <BCol cols="12" md="auto" class="d-flex justify-content-center">
           <slot name="pagination" v-bind="{refresh, total, page: tPage, limit, loading}">
-            <b-pagination
+            <BPagination
               v-if="total > limit"
               v-model="tPage"
               :total-rows="total"
@@ -89,38 +89,38 @@
               class="m-0"
             />
           </slot>
-        </b-col>
-        <b-col cols="12" md="auto" class="d-flex align-items-center justify-content-center gap-2">
+        </BCol>
+        <BCol cols="12" md="auto" class="d-flex align-items-center justify-content-center gap-2">
           <slot name="pagination-data" v-bind="{refresh, total, page: tPage, limit, loading}">
-            <b-button @click="() => refresh()">
-              <b-spinner v-if="loading" :small="true" />
-              <vesp-fa v-else icon="repeat" fixed-width />
-            </b-button>
+            <BButton @click="() => refresh()">
+              <BSpinner v-if="loading" :small="true" />
+              <VespFa v-else icon="repeat" fixed-width />
+            </BButton>
             {{ t('components.table.records', {total}, total) }}
           </slot>
-        </b-col>
-      </b-row>
+        </BCol>
+      </BRow>
     </slot>
 
     <slot name="default" />
 
     <slot name="delete" v-bind="deleteProps">
-      <b-modal v-model="deleteVisible" centered hide-footer hide-header @hidden="deleting = {}">
-        <b-overlay :opacity="0.5" :show="deleteLoading">
+      <BModal v-model="deleteVisible" centered hide-footer hide-header @hidden="deleting = {}">
+        <BOverlay :opacity="0.5" :show="deleteLoading">
           <slot name="delete-content" v-bind="deleteProps">
             <div class="text-center">
-              <h5 class="mt-4 mb-0">{{ $t(deleteTitle) }}</h5>
-              <div class="mt-4">{{ $t(deleteText) }}</div>
+              <h5 class="mt-4 mb-0">{{ t(deleteTitle) }}</h5>
+              <div class="mt-4">{{ t(deleteText) }}</div>
             </div>
           </slot>
           <slot name="delete-footer" v-bind="deleteProps">
             <div class="d-flex justify-content-between mt-4">
-              <b-button @click="deleteVisible = false">{{ $t('actions.cancel') }}</b-button>
-              <b-button variant="danger" @click="deleteItem">{{ $t('actions.delete') }}</b-button>
+              <BButton @click="deleteVisible = false">{{ t('actions.cancel') }}</BButton>
+              <BButton variant="danger" @click="deleteItem">{{ t('actions.delete') }}</BButton>
             </div>
           </slot>
-        </b-overlay>
-      </b-modal>
+        </BOverlay>
+      </BModal>
     </slot>
   </section>
 </template>

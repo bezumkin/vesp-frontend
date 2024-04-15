@@ -1,13 +1,13 @@
 <template>
   <div class="vesp-date-picker">
-    <b-form-input
+    <BFormInput
       v-if="readonly || disabled"
       :value="Array.isArray(myValue) ? myValue.join(rangeSeparator) : myValue"
       :readonly="readonly"
       :disabled="disabled"
     />
-    <client-only v-else>
-      <vue-date-picker
+    <ClientOnly v-else>
+      <VueDatePicker
         ref="datepicker"
         v-model:value="myValue"
         :range-separator="rangeSeparator"
@@ -30,20 +30,20 @@
         @clear="onDateClear"
       >
         <template #icon-calendar>
-          <b-button v-show="!myValue || !myValue.length" variant="secondary" :disabled="disabled">
-            <vesp-fa icon="calendar-alt" fixed-width />
-          </b-button>
+          <BButton v-show="!myValue || !myValue.length" variant="secondary" :disabled="disabled">
+            <VespFa icon="calendar-alt" fixed-width />
+          </BButton>
         </template>
         <template #icon-clear>
-          <b-button v-show="myValue" variant="secondary" :disabled="disabled">
-            <vesp-fa icon="times" fixed-width />
-          </b-button>
+          <BButton v-show="myValue" variant="secondary" :disabled="disabled">
+            <VespFa icon="times" fixed-width />
+          </BButton>
         </template>
         <template v-for="(_, slotName) in $slots" #[slotName]="slotData">
           <slot :name="slotName" v-bind="slotData" />
         </template>
-      </vue-date-picker>
-    </client-only>
+      </VueDatePicker>
+    </ClientOnly>
   </div>
 </template>
 

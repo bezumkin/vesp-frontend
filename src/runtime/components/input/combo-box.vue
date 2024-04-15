@@ -1,7 +1,7 @@
 <template>
   <div class="vesp-combo">
-    <b-input-group>
-      <b-form-input
+    <BInputGroup>
+      <BFormInput
         ref="input"
         v-model="externalValue"
         v-bind="inputProps"
@@ -12,12 +12,12 @@
       />
       <template #append>
         <slot name="append" v-bind="{toggle: toggleDropdown, disabled, readonly, options}">
-          <b-button :disabled="!options.length || disabled || readonly" tabindex="-1" @click.prevent="toggleDropdown">
-            <vesp-fa icon="caret-down" fixed-width />
-          </b-button>
+          <BButton :disabled="!options.length || disabled || readonly" tabindex="-1" @click.prevent="toggleDropdown">
+            <VespFa icon="caret-down" fixed-width />
+          </BButton>
         </slot>
       </template>
-    </b-input-group>
+    </BInputGroup>
 
     <ul :class="{'dropdown-menu vesp-combo-list': true, show: dropdown}">
       <slot v-if="!options.length" name="no-results" v-bind="{hideDropdown, emptyText}">
@@ -25,7 +25,7 @@
       </slot>
       <template v-else>
         <slot name="list-header" v-bind="{hideDropdown, total}" />
-        <b-dropdown-item
+        <BDropdownItem
           v-for="(item, idx) in options"
           :key="item[valueField]"
           :class="{'vesp-combo-list-item': true}"
@@ -35,11 +35,11 @@
           <slot name="default" v-bind="{item}">
             {{ prepareValue(item) }}
           </slot>
-        </b-dropdown-item>
+        </BDropdownItem>
         <slot name="list-footer" v-bind="{hideDropdown, total}">
-          <b-container v-if="total > options.length" class="my-2" @click="(e: Event) => e.stopPropagation()">
-            <b-pagination v-model="page" :per-page="limit" :limit="maxPages" :total-rows="total" />
-          </b-container>
+          <BContainer v-if="total > options.length" class="my-2" @click="(e: Event) => e.stopPropagation()">
+            <BPagination v-model="page" :per-page="limit" :limit="maxPages" :total-rows="total" />
+          </BContainer>
         </slot>
       </template>
     </ul>

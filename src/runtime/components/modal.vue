@@ -1,28 +1,28 @@
 <template>
   <section class="vesp-modal">
-    <b-modal ref="modal" v-model="showModal" v-bind="modalProps">
+    <BModal ref="modal" v-model="showModal" v-bind="modalProps">
       <template #default>
-        <b-overlay :opacity="0.5" :show="loading">
-          <b-form ref="form" @submit.prevent="submit">
+        <BOverlay :opacity="0.5" :show="loading">
+          <BForm ref="form" @submit.prevent="submit">
             <slot name="form-fields" v-bind="{record, loading, hide, submit}" />
             <input type="submit" class="d-none" />
-          </b-form>
-        </b-overlay>
+          </BForm>
+        </BOverlay>
       </template>
       <template #footer>
         <slot name="footer" v-bind="{record, loading, hide, submit, formSubmit}">
-          <b-button :variant="props.cancelVariant" :disabled="loading" @click="hide">
+          <BButton :variant="props.cancelVariant" :disabled="loading" @click="hide">
             {{ $t(cancelTitle) }}
-          </b-button>
-          <b-button v-if="url" :variant="props.okVariant" :disabled="loading" @click.prevent="formSubmit">
+          </BButton>
+          <BButton v-if="url" :variant="props.okVariant" :disabled="loading" @click.prevent="formSubmit">
             {{ $t(okTitle) }}
-          </b-button>
+          </BButton>
         </slot>
       </template>
       <template v-for="slotName in Object.keys($slots)" #[slotName]="slotProps">
         <slot :name="slotName" v-bind="{...slotProps, record, loading, hide, submit, formSubmit}" />
       </template>
-    </b-modal>
+    </BModal>
   </section>
 </template>
 

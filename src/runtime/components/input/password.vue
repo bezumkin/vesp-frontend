@@ -1,13 +1,13 @@
 <template>
   <div class="vesp-input-password">
-    <b-form-input v-model="record" v-bind="props" :type="passwordVisible ? 'text' : 'password'" />
+    <BFormInput v-model="record" v-bind="props" :type="passwordVisible ? 'text' : 'password'" />
     <slot name="button" v-bind="{disabled, togglePassword, passwordVisible}">
-      <b-button variant="link" :disabled="disabled" tabindex="-1" @click="togglePassword">
+      <BButton variant="link" :disabled="disabled" tabindex="-1" @click="togglePassword">
         <slot name="icon" v-bind="{disabled, togglePassword, passwordVisible}">
-          <vesp-fa v-if="passwordVisible" key="slash" icon="eye-slash" fixed-width />
-          <vesp-fa v-else key="eye" icon="eye" fixed-width />
+          <VespFa v-if="passwordVisible" key="slash" icon="eye-slash" fixed-width />
+          <VespFa v-else key="eye" icon="eye" fixed-width />
         </slot>
-      </b-button>
+      </BButton>
     </slot>
   </div>
 </template>

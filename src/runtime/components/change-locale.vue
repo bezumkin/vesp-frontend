@@ -1,11 +1,11 @@
 <template>
   <div class="vesp-change-locale">
     <slot name="default" v-bind="{locale, locales, setLocale}">
-      <b-form-select :model-value="locale" :class="selectClass" @change="setLocale">
-        <b-form-select-option v-for="item in locales" :key="item.code" :value="item.code">
+      <BFormSelect :model-value="locale" :class="selectClass" @change="setLocale">
+        <BFormSelectOption v-for="item in locales" :key="item.code" :value="item.code">
           {{ item.name }}
-        </b-form-select-option>
-      </b-form-select>
+        </BFormSelectOption>
+      </BFormSelect>
     </slot>
   </div>
 </template>

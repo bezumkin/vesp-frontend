@@ -1,39 +1,39 @@
 <template>
   <section class="vesp-remote-links">
-    <b-input-group>
+    <BInputGroup>
       <template #prepend>
-        <b-form-select v-model="form.service" :options="myServices">
+        <BFormSelect v-model="form.service" :options="myServices">
           <template #first>
-            <b-form-select-option :value="null" disabled selected>---</b-form-select-option>
+            <BFormSelectOption :value="null" disabled selected>---</BFormSelectOption>
           </template>
-        </b-form-select>
+        </BFormSelect>
       </template>
 
-      <b-form-input v-model="form.link" type="url" :disabled="!form.service" @keydown="onKeyDown" />
+      <BFormInput v-model="form.link" type="url" :disabled="!form.service" @keydown="onKeyDown" />
 
       <template #append>
-        <b-button :disabled="!form.service || !form.link" @click.prevent="onAdd">
-          <vesp-fa icon="check" fixed-width />
-        </b-button>
+        <BButton :disabled="!form.service || !form.link" @click.prevent="onAdd">
+          <VespFa icon="check" fixed-width />
+        </BButton>
       </template>
-    </b-input-group>
+    </BInputGroup>
 
-    <b-table-simple :responsive="true" class="vesp-table">
-      <b-tbody>
-        <b-tr v-for="(link, service) in myValue" :key="link">
-          <b-td class="align-middle border-bottom">{{ getTitle(service) }}</b-td>
-          <b-td class="align-middle border-bottom">
+    <BTableSimple :responsive="true" class="vesp-table">
+      <BTbody>
+        <BTr v-for="(link, service) in myValue" :key="link">
+          <BTd class="align-middle border-bottom">{{ getTitle(service) }}</BTd>
+          <BTd class="align-middle border-bottom">
             <a v-if="service === 'email'" :href="'mailto:' + link" target="_blank" v-text="link" />
             <a v-else :href="link" target="_blank" v-text="link" />
-          </b-td>
-          <b-td class="actions pe-0">
-            <b-button variant="light" class="text-danger" @click="onDelete(service)">
-              <vesp-fa icon="times" fixed-width />
-            </b-button>
-          </b-td>
-        </b-tr>
-      </b-tbody>
-    </b-table-simple>
+          </BTd>
+          <BTd class="actions pe-0">
+            <BButton variant="light" class="text-danger" @click="onDelete(service)">
+              <VespFa icon="times" fixed-width />
+            </BButton>
+          </BTd>
+        </BTr>
+      </BTbody>
+    </BTableSimple>
   </section>
 </template>
 
