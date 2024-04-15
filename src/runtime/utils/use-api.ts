@@ -42,22 +42,31 @@ export function useCustomFetch(endpoint: string, options: UseFetchOptions<any> =
   })
 }
 
-export function useGet(endpoint: string, params = {}, options: FetchOptions<any> = {}) {
-  return useApi(endpoint, {...options, query: params, method: 'GET'})
+export function useGet(endpoint: string, params: Record<string, any> = {}, options: FetchOptions<any> = {}) {
+  const query: Record<string, any> = {}
+  Object.keys(params).forEach((key) => {
+    const value = params[key]
+    if (Array.isArray(value)) {
+      query[`${key}[]`] = value
+    } else {
+      query[key] = value
+    }
+  })
+  return useApi(endpoint, {...options, query, method: 'GET'})
 }
 
-export function usePost(endpoint: string, params = {}, options: FetchOptions<any> = {}) {
+export function usePost(endpoint: string, params: Record<string, any> = {}, options: FetchOptions<any> = {}) {
   return useApi(endpoint, {...options, body: params, method: 'POST'})
 }
 
-export function usePut(endpoint: string, params = {}, options: FetchOptions<any> = {}) {
+export function usePut(endpoint: string, params: Record<string, any> = {}, options: FetchOptions<any> = {}) {
   return useApi(endpoint, {...options, body: params, method: 'PUT'})
 }
 
-export function usePatch(endpoint: string, params = {}, options: FetchOptions<any> = {}) {
+export function usePatch(endpoint: string, params: Record<string, any> = {}, options: FetchOptions<any> = {}) {
   return useApi(endpoint, {...options, body: params, method: 'PATCH'})
 }
 
-export function useDelete(endpoint: string, params = {}, options: FetchOptions<any> = {}) {
+export function useDelete(endpoint: string, params: Record<string, any> = {}, options: FetchOptions<any> = {}) {
   return useApi(endpoint, {...options, query: params, method: 'DELETE'})
 }
