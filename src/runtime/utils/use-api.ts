@@ -8,12 +8,16 @@ import {useToastError} from './use-toast'
 import useAuth from './use-auth'
 
 function onRequest({options}: FetchContext): void {
+  const headers = new Headers(options.headers || {})
   const {token} = useAuth()
   if (token.value) {
-    const headers = new Headers(options.headers || {})
     headers.set('Authorization', token.value)
-    options.headers = headers
   }
+  const {locale} = useNuxtApp().$i18n as Composer
+  if (locale.value) {
+    headers.set('Content-Language', locale.value)
+  }
+  options.headers = headers
 }
 
 function onResponseError({response}: FetchContext): void {

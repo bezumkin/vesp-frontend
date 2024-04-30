@@ -10,6 +10,7 @@ export default defineNuxtConfig({
       API_URL: 'https://jsonplaceholder.typicode.com/',
     },
   },
+  modules: ['../src/module.ts'],
   // @ts-ignore
   vesp: {
     icons: {
