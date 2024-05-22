@@ -1,41 +1,41 @@
 <template>
   <div>
-    <b-form-group :label="$t('components.table.columns.title')">
-      <b-form-input v-model="record.title" required />
-    </b-form-group>
+    <BFormGroup :label="$t('components.table.columns.title')">
+      <BFormInput v-model="record.title" required />
+    </BFormGroup>
 
-    <b-form-group :label="$t('components.table.columns.userId')">
-      <b-form-input v-model="record.userId" required />
-    </b-form-group>
+    <BFormGroup :label="$t('components.table.columns.userId')">
+      <BFormInput v-model="record.userId" required />
+    </BFormGroup>
 
-    <b-form-group :label="$t('components.table.columns.body')">
-      <b-form-textarea v-model="record.body" rows="5" required />
-    </b-form-group>
+    <BFormGroup :label="$t('components.table.columns.body')">
+      <BFormTextarea v-model="record.body" rows="5" required />
+    </BFormGroup>
 
-    <b-form-group label="Uri Alias">
-      <vesp-input-alias v-model="record.alias" :watch="record.title" />
-    </b-form-group>
+    <BFormGroup label="Uri Alias">
+      <VespInputAlias v-model="record.alias" :watch="record.title" />
+    </BFormGroup>
 
-    <b-form-group label="Date Picker">
-      <vesp-input-date-picker v-model="record.date" type="datetime" />
-    </b-form-group>
+    <BFormGroup label="Date Picker">
+      <VespInputDatePicker v-model="record.date" type="datetime" />
+    </BFormGroup>
 
-    <b-form-group label="Text Mask">
-      <vesp-input-text-mask v-model="record.phone" required :state="!!(record.phone && record.phone.length === 12)" />
-    </b-form-group>
+    <BFormGroup label="Text Mask">
+      <VespInputTextMask v-model="record.phone" required :state="!!(record.phone && record.phone.length === 12)" />
+    </BFormGroup>
     {{ record.phone }}
 
-    <b-form-group label="Password Input">
-      <vesp-input-password v-model="record.password" />
-    </b-form-group>
+    <BFormGroup label="Password Input">
+      <VespInputPassword v-model="record.password" />
+    </BFormGroup>
 
-    <b-form-group label="Combo Box">
-      <vesp-input-combo-box ref="combo" v-model="record.combo" :url="url" :on-load="onLoad" />
-    </b-form-group>
+    <BFormGroup label="Combo Box">
+      <VespInputComboBox ref="combo" v-model="record.combo" :url="url" :on-load="onLoad" force-select />
+    </BFormGroup>
 
-    <b-form-group label="Remote Links">
-      <vesp-input-remote-links v-model="record.links" />
-    </b-form-group>
+    <BFormGroup label="Remote Links">
+      <VespInputRemoteLinks v-model="record.links" />
+    </BFormGroup>
   </div>
 </template>
 

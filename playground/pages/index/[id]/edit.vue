@@ -1,9 +1,9 @@
 <template>
-  <vesp-modal v-model="record" :url="url" method="patch" update-key="posts">
+  <VespModal v-model="record" :url="url" method="patch" update-key="posts">
     <template #form-fields>
-      <forms-item v-model="record" />
+      <FormsItem v-model="record" />
     </template>
-  </vesp-modal>
+  </VespModal>
 </template>
 
 <script setup lang="ts">

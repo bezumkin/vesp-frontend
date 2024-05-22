@@ -1,14 +1,14 @@
 <template>
   <div>
-    <b-container>
-      <nuxt-page />
+    <BContainer>
+      <NuxtPage />
 
-      <b-row align-v="center">
-        <b-col md="4"></b-col>
-        <b-col md="4"><vesp-change-locale /></b-col>
-        <b-col md="4"></b-col>
-      </b-row>
-    </b-container>
+      <BRow align-v="center">
+        <BCol md="4"></BCol>
+        <BCol md="4"><VespChangeLocale /></BCol>
+        <BCol md="4"></BCol>
+      </BRow>
+    </BContainer>
   </div>
 </template>
 

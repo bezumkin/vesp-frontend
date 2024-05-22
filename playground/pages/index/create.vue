@@ -1,9 +1,9 @@
 <template>
-  <vesp-modal v-model="record" :url="url" :title="record.title">
+  <VespModal v-model="record" :url="url" :title="record.title">
     <template #form-fields>
-      <forms-item v-model="record" />
+      <FormsItem v-model="record" />
     </template>
-  </vesp-modal>
+  </VespModal>
 </template>
 
 <script setup lang="ts">
