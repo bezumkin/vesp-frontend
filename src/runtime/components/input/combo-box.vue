@@ -6,9 +6,9 @@
         v-model="externalValue"
         v-bind="inputProps"
         autocomplete="off"
-        @update:model-value="onInput"
         @change="onChange"
         @keydown="onKeydown"
+        @update:model-value="onInput"
       />
       <template #append>
         <slot name="append" v-bind="{toggle: toggleDropdown, disabled, readonly, options}">
@@ -273,9 +273,10 @@ async function onInput(value: string) {
   }
 }
 
-function onChange(value: string | number) {
-  emit('change', value)
-  if (value && props.forceSelect && !internalValue.value && options.value.length) {
+function onChange(e: InputEvent) {
+  const input = e.target as HTMLInputElement
+  emit('change', input.value)
+  if (input.value && props.forceSelect && !internalValue.value && options.value.length) {
     onSelect(0)
   }
 }

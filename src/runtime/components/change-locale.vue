@@ -1,7 +1,7 @@
 <template>
   <div class="vesp-change-locale">
     <slot name="default" v-bind="{locale, locales, setLocale}">
-      <BFormSelect :model-value="locale" :class="selectClass" @change="setLocale">
+      <BFormSelect :model-value="locale" :class="selectClass" @update:model-value="setLocale">
         <BFormSelectOption v-for="item in locales" :key="item.code" :value="item.code">
           {{ item.name }}
         </BFormSelectOption>
@@ -13,8 +13,8 @@
 <script setup lang="ts">
 import {computed} from 'vue'
 import {useNuxtApp} from '#app'
-import type {LocaleObject} from 'vue-i18n-routing'
 import type {Composer} from 'vue-i18n'
+import type {LocaleObject} from '@nuxtjs/i18n'
 
 defineProps({
   selectClass: {
