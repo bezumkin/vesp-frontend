@@ -1,20 +1,25 @@
 .vesp-table {
   .b-table {
-    th, td {
+    th {
       vertical-align: middle;
+      white-space: nowrap;
     }
 
-    td.actions {
-      white-space: nowrap;
-      text-align: right;
+    td {
+      vertical-align: middle;
 
-      .btn {
-        svg {
-          width: 1rem;
-        }
+      &.actions {
+        white-space: nowrap;
+        text-align: right;
 
-        &:not(:first-child) {
-          margin-left: 0.25rem;
+        .btn {
+          svg {
+            width: 1rem;
+          }
+
+          &:not(:first-child) {
+            margin-left: 0.25rem;
+          }
         }
       }
     }
