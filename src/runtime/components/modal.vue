@@ -3,7 +3,7 @@
     <BModal ref="modal" v-model="showModal" v-bind="modalProps">
       <template #default>
         <BOverlay :opacity="0.5" :show="loading">
-          <BForm ref="form" @submit.prevent="submit">
+          <BForm ref="form" @submit.prevent="submit" @keydown="onKeydown">
             <slot name="form-fields" v-bind="{record, loading, hide, submit}" />
             <input type="submit" class="d-none" />
           </BForm>
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import {computed, ref, onMounted, useAttrs} from 'vue'
 import {BModal} from 'bootstrap-vue-next'
-import {useRoute, navigateTo, useRouter, refreshNuxtData} from '#app'
+import {useNuxtApp, useRoute, navigateTo, useRouter, refreshNuxtData} from '#app'
 import {useApi} from '../utils/use-api'
 import {useToastError} from '../utils/use-toast'
 
@@ -171,6 +171,13 @@ function focusField() {
     if (input) {
       input.focus()
     }
+  }
+}
+
+function onKeydown(e: KeyboardEvent) {
+  if ((e.metaKey || e.ctrlKey) && e.code === 'KeyS') {
+    e.preventDefault()
+    formSubmit()
   }
 }
 
