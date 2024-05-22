@@ -7,12 +7,13 @@ export default {
     submit: 'Indienen',
     cancel: 'Annuleren',
     close: 'Dichtbij',
+    ok: 'Ok',
   },
   components: {
-    confirm_delete_title: 'Bevestiging vereist',
-    confirm_delete_message: 'Weet u zeker dat u dit item wilt verwijderen?',
-    confirm_yes: 'Ja',
-    confirm_no: 'Nee',
+    confirm: {
+      title: 'Bevestiging vereist',
+      message: 'Weet je het zeker?',
+    },
     table: {
       no_data: 'Niets om te laten zien',
       no_results: 'Nothing found',

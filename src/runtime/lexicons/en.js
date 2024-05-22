@@ -7,12 +7,13 @@ export default {
     submit: 'Submit',
     cancel: 'Cancel',
     close: 'Close',
+    ok: 'Ok',
   },
   components: {
-    confirm_delete_title: 'Confirmation required',
-    confirm_delete_message: 'Are you sure you want to delete this entry?',
-    confirm_yes: 'Yes',
-    confirm_no: 'No',
+    confirm: {
+      title: 'Confirmation required',
+      message: 'Are you sure?',
+    },
     table: {
       no_data: 'Nothing to display',
       no_results: 'Nothing found',

@@ -107,22 +107,17 @@
     <slot name="default" />
 
     <slot name="delete" v-bind="deleteProps">
-      <BModal v-model="deleteVisible" centered hide-footer hide-header @hidden="deleting = {}">
+      <VespConfirm
+        v-if="deleteVisible"
+        :title="deleteTitle"
+        :on-ok="deleteItem"
+        ok-title="actions.delete"
+        @hidden="onDeleteCancel"
+      >
         <BOverlay :opacity="0.5" :show="deleteLoading">
-          <slot name="delete-content" v-bind="deleteProps">
-            <div class="text-center">
-              <h5 class="mt-4 mb-0">{{ t(deleteTitle) }}</h5>
-              <div class="mt-4">{{ t(deleteText) }}</div>
-            </div>
-          </slot>
-          <slot name="delete-footer" v-bind="deleteProps">
-            <div class="d-flex justify-content-between mt-4">
-              <BButton @click="deleteVisible = false">{{ t('actions.cancel') }}</BButton>
-              <BButton variant="danger" @click="deleteItem">{{ t('actions.delete') }}</BButton>
-            </div>
-          </slot>
+          <div v-html="$t(deleteText)" />
         </BOverlay>
-      </BModal>
+      </VespConfirm>
     </slot>
   </section>
 </template>
@@ -135,6 +130,7 @@ import type {RouteLocationNamedRaw} from 'vue-router'
 import {useI18n} from 'vue-i18n'
 import type {VespTableAction, VespTableOnLoad} from '../../module'
 import {useCustomFetch, useDelete} from '../utils/use-api'
+import VespConfirm from './confirm.vue'
 
 const emit = defineEmits(['update:modelValue', 'update:sort', 'update:dir', 'update:limit', 'update:filters', 'delete'])
 const props = defineProps({
@@ -377,6 +373,11 @@ function getParams(asObject = false) {
 function onDelete(item: any) {
   deleteVisible.value = true
   deleting.value = item
+}
+
+function onDeleteCancel() {
+  deleteVisible.value = false
+  deleting.value = {}
 }
 
 async function deleteItem() {

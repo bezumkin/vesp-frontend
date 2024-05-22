@@ -7,12 +7,13 @@ export default {
     submit: 'Отправить',
     cancel: 'Отмена',
     close: 'Закрыть',
+    ok: 'Ok',
   },
   components: {
-    confirm_delete_title: 'Требуется подтверждение',
-    confirm_delete_message: 'Вы уверены, что хотите удалить эту запись?',
-    confirm_yes: 'Да',
-    confirm_no: 'Нет',
+    confirm: {
+      title: 'Требуется подтверждение',
+      message: 'Вы уверены?',
+    },
     table: {
       no_data: 'Нет данных для вывода',
       no_results: 'Результатов не найдено',

@@ -7,12 +7,13 @@ export default {
     submit: 'Speichern',
     cancel: 'Abbrechen',
     close: 'Schließen',
+    ok: 'Ok',
   },
   components: {
-    confirm_delete_title: 'Bestätigung erforderlich',
-    confirm_delete_message: 'Möchten Sie diesen Eintrag wirklich löschen?',
-    confirm_yes: 'Ja',
-    confirm_no: 'Nein',
+    confirm: {
+      title: 'Bestätigung erforderlich',
+      message: 'Bist du dir sicher?',
+    },
     table: {
       no_data: 'Nichts zu zeigen',
       no_results: 'Nichts gefunden',

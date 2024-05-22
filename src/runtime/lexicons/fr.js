@@ -7,12 +7,13 @@ export default {
     submit: 'Soumettre',
     cancel: 'Annuler',
     close: 'Proche',
+    ok: 'Ok',
   },
   components: {
-    confirm_delete_title: 'Confirmation requise',
-    confirm_delete_message: 'Voulez-vous vraiment supprimer cette entrée?',
-    confirm_yes: 'Oui',
-    confirm_no: 'Non',
+    confirm: {
+      title: 'Confirmation requise',
+      message: 'Es-tu sûr?',
+    },
     table: {
       no_data: 'Rien à afficher',
       no_results: 'Rien trouvé',
