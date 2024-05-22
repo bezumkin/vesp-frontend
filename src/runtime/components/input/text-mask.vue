@@ -5,7 +5,7 @@
       :model-value="internalValue"
       v-bind="props"
       :placeholder="internalPlaceholder"
-      @input="onInput"
+      @update:model-value="onInput"
     />
   </div>
 </template>

@@ -81,7 +81,17 @@ export default defineNuxtModule<ModuleOptions>({
 
     addPlugin(resolver.resolve('./runtime/plugins/vesp'))
     addPlugin(resolver.resolve('./runtime/plugins/date-picker.client'))
-    await installModule('@bootstrap-vue-next/nuxt')
+    await installModule('@bootstrap-vue-next/nuxt', {
+      plugin: {
+        modalController: true,
+        modalManager: true,
+        components: {
+          global: {
+            activeClass: 'active',
+          },
+        },
+      },
+    })
     await installModule('@pinia/nuxt')
     await installModule('@vesp/nuxt-fontawesome', {
       component: 'vesp-fa',
@@ -100,8 +110,8 @@ export default defineNuxtModule<ModuleOptions>({
 })
 
 export type VespTableAction = {
-  size?: keyof Size
-  variant?: keyof ButtonVariant
+  size?: Size
+  variant?: ButtonVariant
   class?: String | Array<string> | Object
   route?: any
   function?: Function

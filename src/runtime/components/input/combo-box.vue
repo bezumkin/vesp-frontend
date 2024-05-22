@@ -6,7 +6,7 @@
         v-model="externalValue"
         v-bind="inputProps"
         autocomplete="off"
-        @input="onInput"
+        @update:model-value="onInput"
         @change="onChange"
         @keydown="onKeydown"
       />

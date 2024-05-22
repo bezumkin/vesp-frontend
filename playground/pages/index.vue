@@ -1,5 +1,5 @@
 <template>
-  <vesp-table
+  <VespTable
     ref="table"
     v-model="page"
     class="mt-5 mb-5"
@@ -13,17 +13,20 @@
     sort="title"
     dir="asc"
   >
-    <nuxt-page />
-  </vesp-table>
+    <NuxtPage />
+  </VespTable>
 </template>
 
 <script setup lang="ts">
 import {useI18n} from 'vue-i18n'
+import type {ComputedRef} from 'vue'
+import type {VespTableAction} from '../../src/module'
 
 const url = 'posts'
 const page = ref(1)
 const filters = ref({query: ''})
 const limit = 10
+const table = ref()
 
 const {t, mergeLocaleMessage} = useI18n()
 
@@ -38,10 +41,10 @@ const fields = computed(() => {
 const headerActions = computed(() => {
   return [{route: {name: 'index-create'}, icon: 'plus', title: t('actions.create')}]
 })
-const tableActions = computed(() => {
+const tableActions: ComputedRef<VespTableAction[]> = computed(() => {
   return [
     {route: {name: 'index-id-edit'}, icon: 'edit', title: t('actions.edit')},
-    {function: 'onDelete', icon: 'times', title: t('actions.delete'), variant: 'danger'},
+    {function: table.value?.delete, icon: 'times', title: t('actions.delete'), variant: 'danger'},
   ]
 })
 

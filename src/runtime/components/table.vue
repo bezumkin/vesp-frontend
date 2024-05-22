@@ -8,7 +8,7 @@
               v-for="(action, idx) in headerActions"
               :key="idx"
               :size="action.size || 'md'"
-              :variant="action.variant"
+              :variant="action.variant || 'secondary'"
               :class="action.class || (!idx ? 'col-12 col-md-auto' : 'col-12 col-md-auto ms-md-2 mt-2 mt-md-0')"
               :to="action.route"
               @click="action.function"
@@ -37,47 +37,49 @@
       </BRow>
     </slot>
 
-    <BTable
-      :items="items"
-      :fields="tFields"
-      :class="tableClass"
-      :per-page="tLimit"
-      :sort-by="tSort"
-      :sort-desc="tDir === 'desc'"
-      :empty-text="t(emptyText)"
-      :empty-filtered-text="t(emptyFilteredText)"
-      :stacked="stacked"
-      :responsive="responsive"
-      :show-empty="showEmpty"
-      :sort-internal="false"
-      :busy="loading"
-      :tbody-tr-class="rowClass"
-      @sorted="onSort"
-    >
-      <template #cell(actions)="{item}">
-        <template v-for="(action, idx) in tableActions">
-          <BButton
-            v-if="typeof action.isActive !== 'function' || action.isActive(item) === true"
-            :key="idx"
-            :size="action.size || 'sm'"
-            :variant="action.variant"
-            :class="action.class"
-            :to="mapRouteParams(action, item)"
-            @click="onClick(action, item)"
-          >
-            <VespFa v-if="action.icon" :icon="action.icon" fixed-width />
-            <template v-else>{{ action.title }}</template>
-          </BButton>
+    <BOverlay :show="loading" opacity="0.25">
+      <BTable
+        :items="items"
+        :fields="tFields"
+        :class="tableClass"
+        :per-page="tLimit"
+        :sort-by="tSortBy"
+        :multisort="tSortBy.length > 1"
+        :sort-desc="tDir === 'desc'"
+        :empty-text="$t(emptyText)"
+        :empty-filtered-text="$t(emptyFilteredText)"
+        :stacked="stacked"
+        :responsive="responsive"
+        :show-empty="showEmpty"
+        :no-local-sorting="true"
+        :tbody-tr-class="rowClass"
+        @sorted="onSort"
+      >
+        <template #cell(actions)="{item}">
+          <template v-for="(action, idx) in tableActions">
+            <BButton
+              v-if="typeof action.isActive !== 'function' || action.isActive(item) === true"
+              :key="idx"
+              :size="action.size || 'sm'"
+              :variant="action.variant || 'secondary'"
+              :class="action.class"
+              v-bind="action.route ? {to: mapRouteParams(action, item)} : {}"
+              @click="onClick(action, item)"
+            >
+              <VespFa v-if="action.icon" :icon="action.icon" fixed-width />
+              <template v-else>{{ action.title }}</template>
+            </BButton>
+          </template>
         </template>
-      </template>
 
-      <template v-for="slotName in Object.keys($slots)" #[slotName]="slotProps">
-        <slot v-if="slotName !== 'default'" :name="slotName" v-bind="slotProps" />
-      </template>
-    </BTable>
+        <template v-for="slotName in Object.keys($slots)" #[slotName]="slotProps">
+          <slot v-if="slotName !== 'default'" :name="slotName" v-bind="slotProps" />
+        </template>
+      </BTable>
+    </BOverlay>
 
     <slot name="footer" v-bind="{refresh, total, page: tPage, limit, loading}">
-      <BRow class="mt-5 align-items-center justify-content-center justify-content-md-start gap-3" no-gutters>
+      <BRow class="mt-5 align-items-center justify-content-center justify-content-md-start" no-gutters>
         <BCol cols="12" md="auto" class="d-flex justify-content-center">
           <slot name="pagination" v-bind="{refresh, total, page: tPage, limit, loading}">
             <BPagination
@@ -86,13 +88,13 @@
               :total-rows="total"
               :per-page="limit"
               :limit="pageLimit"
-              class="m-0"
+              class="mb-md-0 me-md-3"
             />
           </slot>
         </BCol>
         <BCol cols="12" md="auto" class="d-flex align-items-center justify-content-center gap-2">
           <slot name="pagination-data" v-bind="{refresh, total, page: tPage, limit, loading}">
-            <BButton @click="() => refresh()">
+            <BButton class="border-0" @click="() => refresh()">
               <BSpinner v-if="loading" :small="true" />
               <VespFa v-else icon="repeat" fixed-width />
             </BButton>
@@ -126,8 +128,9 @@
 </template>
 
 <script setup lang="ts">
-import {computed, type PropType, type Ref, ref, watch} from 'vue'
-import type {Breakpoint, TableField, TableItem} from 'bootstrap-vue-next'
+import {computed, type PropType, type Ref, ref, watch, type ComputedRef} from 'vue'
+import type {Breakpoint, TableField, TableItem, BTableSortBy} from 'bootstrap-vue-next'
+import type {BTableSortByOrder} from 'bootstrap-vue-next/src/types/TableTypes.ts'
 import type {RouteLocationNamedRaw} from 'vue-router'
 import {useI18n} from 'vue-i18n'
 import type {VespTableAction, VespTableOnLoad} from '../../module'
@@ -247,6 +250,9 @@ const {t} = useI18n()
 const internalValue = ref(1)
 const tSort = ref(props.sort)
 const tDir = ref(props.dir)
+const tSortBy: ComputedRef<BTableSortBy[]> = computed(() => {
+  return [{key: props.sort, order: (props.dir || 'asc') as BTableSortByOrder}]
+})
 const tLimit = ref(props.limit)
 const tFilters = ref(props.filters)
 const tPage = computed({
@@ -296,9 +302,21 @@ const {
 const total = computed(() => data.value?.total || 0)
 const items = computed(() => data.value?.rows || [])
 
-function onSort(field: string, desc: boolean) {
-  tSort.value = field
-  tDir.value = desc ? 'desc' : 'asc'
+function onSort(value: BTableSortBy | string) {
+  if (typeof value === 'string') {
+    if (tSort.value === value) {
+      tDir.value = tDir.value === 'asc' ? 'desc' : 'asc'
+    } else {
+      tDir.value = 'asc'
+    }
+    tSort.value = value
+  } else if (value.key && value.order) {
+    tSort.value = value.key
+    tDir.value = value.order
+  } else {
+    tSort.value = ''
+    tDir.value = ''
+  }
   refresh()
 }
 
@@ -308,13 +326,13 @@ function mapRouteParams(action: VespTableAction, item: Record<string, any>): Rou
   }
   if (!action.map) {
     action.map = {}
-    if (typeof props.primaryKey === 'string') {
-      action.map[props.primaryKey] = props.primaryKey
-    } else {
+    if (Array.isArray(props.primaryKey)) {
       props.primaryKey.forEach((i: any) => {
         // @ts-ignore
         action.map[i] = i
       })
+    } else {
+      action.map[props.primaryKey] = props.primaryKey
     }
   }
   const params: Record<string, any> = {}
