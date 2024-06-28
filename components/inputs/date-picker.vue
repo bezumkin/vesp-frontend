@@ -25,6 +25,8 @@
       :input-attr="{required: required, autofocus: autofocus}"
       :disabled-date="disabledDate"
       :disabled-time="disabledTime"
+      :minute-step="minuteStep"
+      :show-second="showSecond"
       :editable="true"
       :append-to-body="false"
       @clear="onDateClear"
@@ -124,6 +126,14 @@ export default {
       default() {
         return false
       },
+    },
+    showSecond: {
+      type: Boolean,
+      default: true,
+    },
+    minuteStep: {
+      type: Number,
+      default: 1,
     },
     firstDayOfWeek: {
       type: [String, Number],
