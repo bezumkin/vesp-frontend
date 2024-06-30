@@ -23,5 +23,13 @@
         }
       }
     }
+
+    tr {
+      &.inactive {
+        td:not(.actions) {
+          opacity: 0.5;
+        }
+      }
+    }
   }
 }
