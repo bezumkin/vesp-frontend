@@ -96,9 +96,9 @@ export default defineNuxtModule<ModuleOptions>({
     await installModule('@vesp/nuxt-fontawesome', {
       component: 'vesp-fa',
       suffix: false,
-      icons: options.icons,
-      proIcons: options.proIcons,
-      sharpIcons: options.sharpIcons,
+      icons: options.icons !== false ? options.icons : undefined,
+      proIcons: options.proIcons !== false ? options.proIcons : undefined,
+      sharpIcons: options.sharpIcons !== false ? options.sharpIcons : undefined,
     })
     await addComponentsDir({path: resolver.resolve('./runtime/components'), prefix: 'vesp'})
     addImportsDir(resolver.resolve('./runtime/utils'))
