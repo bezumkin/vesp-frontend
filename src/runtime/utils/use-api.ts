@@ -3,7 +3,7 @@ import {ofetch} from 'ofetch'
 import type {UseFetchOptions} from 'nuxt/app'
 import type {Composer} from 'vue-i18n'
 import {useFetch, useNuxtApp} from '#app'
-import {getApiUrl} from './vesp'
+import {getApiUrl} from './get-api'
 import {useToastError} from './use-toast'
 import useAuth from './use-auth'
 

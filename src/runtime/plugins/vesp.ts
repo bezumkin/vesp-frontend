@@ -1,5 +1,6 @@
 import {defineNuxtPlugin} from '#app'
-import {hasScope, getImageLink} from '../utils/vesp'
+import {hasScope} from '../utils/has-scope'
+import {getImageLink} from '../utils/get-api'
 
 export default defineNuxtPlugin(() => {
   return {

@@ -9,6 +9,7 @@ import {
   addComponentsDir,
   addTemplate,
   addImportsDir,
+  addServerImports,
 } from '@nuxt/kit'
 
 import type {Ref} from 'vue'
@@ -61,13 +62,13 @@ export default defineNuxtModule<ModuleOptions>({
     },
   },
   async setup(options, nuxt) {
-    const resolver = createResolver(import.meta.url)
+    const {resolve} = createResolver(import.meta.url)
 
     if (options.auth) {
-      addPlugin(resolver.resolve('./runtime/plugins/auth'))
+      addPlugin(resolve('./runtime/plugins/auth'))
     }
     if (options.i18n) {
-      addPlugin(resolver.resolve('./runtime/plugins/i18n'))
+      addPlugin(resolve('./runtime/plugins/i18n'))
       await installModule('@nuxtjs/i18n', options.i18n)
     }
     if (options.toast) {
@@ -76,11 +77,11 @@ export default defineNuxtModule<ModuleOptions>({
         write: true,
         getContents: () => 'export const options = ' + JSON.stringify(options.toast),
       })
-      addPlugin(resolver.resolve('./runtime/plugins/toast.client'))
+      addPlugin(resolve('./runtime/plugins/toast.client'))
     }
 
-    addPlugin(resolver.resolve('./runtime/plugins/vesp'))
-    addPlugin(resolver.resolve('./runtime/plugins/date-picker.client'))
+    addPlugin(resolve('./runtime/plugins/vesp'))
+    addPlugin(resolve('./runtime/plugins/date-picker.client'))
     await installModule('@bootstrap-vue-next/nuxt', {
       plugin: {
         modalController: true,
@@ -100,8 +101,12 @@ export default defineNuxtModule<ModuleOptions>({
       proIcons: options.proIcons !== false ? options.proIcons : undefined,
       sharpIcons: options.sharpIcons !== false ? options.sharpIcons : undefined,
     })
-    await addComponentsDir({path: resolver.resolve('./runtime/components'), prefix: 'vesp'})
-    addImportsDir(resolver.resolve('./runtime/utils'))
+    await addComponentsDir({path: resolve('./runtime/components'), prefix: 'vesp'})
+    addImportsDir(resolve('./runtime/utils'))
+    addServerImports([
+      {name: 'getApiUrl', from: resolve('./runtime/utils/get-api')},
+      {name: 'getImageLink', from: resolve('./runtime/utils/get-api')},
+    ])
 
     nuxt.hook('modules:done', () => {
       console.info('Vesp module is ready')

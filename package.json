@@ -2,7 +2,7 @@
   "license": "MIT",
   "name": "@vesp/frontend",
   "description": "Nuxt 3 based frontend for your Vesp project",
-  "version": "3.3.0",
+  "version": "3.4.1",
   "type": "module",
   "exports": {
     ".": {
@@ -39,7 +39,7 @@
     "lint:fix": "eslint ./src --fix",
     "stylelint": "stylelint ./assets/**/*.scss",
     "stylelint:fix": "stylelint --fix --quiet ./assets/**/*.scss",
-    "release": "npm run lint && npm run stylelint && npm run prepack && npm publish"
+    "release": "npm run lint && npm run stylelint && npm run prepare && npm run build && npm publish"
   },
   "dependencies": {
     "@bootstrap-vue-next/nuxt": "^0.18.1",
