@@ -21,7 +21,7 @@ function onRequest({options}: FetchContext): void {
 }
 
 function onResponseError({response}: FetchContext): void {
-  if (process.client && response?._data) {
+  if (import.meta.client && response?._data) {
     const i18n = useNuxtApp().$i18n as Composer
     useToastError(i18n.t(response._data))
   }
