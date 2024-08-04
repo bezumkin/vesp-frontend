@@ -8,7 +8,7 @@ const tokenName = 'auth:token'
 const tokenType = 'Bearer'
 
 export const useVespAuthStore = defineStore('auth', () => {
-  const maxAge = Number(useRuntimeConfig().public.JWT_EXPIRE)
+  const maxAge = Number(useRuntimeConfig().public.JWT_EXPIRE) || 2592000
   const token = useCookie(tokenName, {path: '/', maxAge})
   const user: Ref<VespUser | undefined> = ref()
   const loggedIn = computed(() => Boolean(user.value && user.value.id > 0))
