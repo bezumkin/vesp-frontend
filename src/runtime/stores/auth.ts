@@ -9,7 +9,27 @@ const tokenType = 'Bearer'
 
 export const useVespAuthStore = defineStore('auth', () => {
   const maxAge = Number(useRuntimeConfig().public.JWT_EXPIRE) || 2592000
-  const token = useCookie(tokenName, {path: '/', maxAge})
+  const cookie = useCookie(tokenName, {path: '/', maxAge})
+  const token = computed<string | undefined>({
+    get() {
+      let value = cookie.value
+      if (!value && import.meta.client) {
+        value = localStorage.getItem(tokenName)
+      }
+      return value || undefined
+    },
+    set(newValue: string | undefined) {
+      cookie.value = newValue
+      if (import.meta.client) {
+        if (newValue) {
+          localStorage.setItem(tokenName, newValue)
+        } else {
+          localStorage.removeItem(tokenName)
+        }
+      }
+    },
+  })
+
   const user: Ref<VespUser | undefined> = ref()
   const loggedIn = computed(() => Boolean(user.value && user.value.id > 0))
 

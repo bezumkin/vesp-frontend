@@ -2,7 +2,7 @@
   "license": "MIT",
   "name": "@vesp/frontend",
   "description": "Nuxt 3 based frontend for your Vesp project",
-  "version": "3.4.2",
+  "version": "3.5.0",
   "type": "module",
   "exports": {
     ".": {
