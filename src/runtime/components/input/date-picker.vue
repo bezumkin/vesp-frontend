@@ -2,7 +2,7 @@
   <div class="vesp-date-picker">
     <BFormInput
       v-if="readonly || disabled"
-      :value="Array.isArray(myValue) ? myValue.join(rangeSeparator) : myValue"
+      :model-value="Array.isArray(myValue) ? myValue.join(rangeSeparator) : myValue"
       :readonly="readonly"
       :disabled="disabled"
     />
