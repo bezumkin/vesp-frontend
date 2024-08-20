@@ -10,8 +10,8 @@ export default defineNuxtConfig({
       API_URL: 'https://jsonplaceholder.typicode.com/',
     },
   },
+  vite: {css: {preprocessorOptions: {scss: {quietDeps: true}}}},
   modules: ['../src/module.ts'],
-  // @ts-ignore
   vesp: {
     icons: {
       solid: ['faUser', 'faUsers', 'faList'],
@@ -19,11 +19,12 @@ export default defineNuxtConfig({
   },
   i18n: {
     locales: [
-      {code: 'ru', name: 'Русский', iso: 'ru-RU'},
-      {code: 'en', name: 'English', iso: 'en-GB'},
-      {code: 'de', name: 'Deutsch', iso: 'de-DE'},
-      {code: 'nl', name: 'Nederlands', iso: 'nl-NL'},
-      {code: 'fr', name: 'Français', iso: 'fr-FR'},
+      {code: 'ru', name: 'Русский', language: 'ru-RU'},
+      {code: 'en', name: 'English', language: 'en-GB'},
+      {code: 'de', name: 'Deutsch', language: 'de-DE'},
+      {code: 'nl', name: 'Nederlands', language: 'nl-NL'},
+      {code: 'fr', name: 'Français', language: 'fr-FR'},
     ],
   },
+  compatibilityDate: '2024-08-20',
 })

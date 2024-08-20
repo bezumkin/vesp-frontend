@@ -117,14 +117,14 @@ export default defineNuxtModule<ModuleOptions>({
 export type VespTableAction = {
   size?: Size
   variant?: ButtonVariant
-  class?: String | Array<string> | Object
+  class?: string | Array<string> | object
   route?: any
-  function?: Function
-  icon?: String | Array<string>
-  title?: String
+  function?: (item: any) => void
+  icon?: string | Array<string>
+  title?: string
   map?: Record<string, string>
   key?: string
-  isActive?: Function
+  isActive?: (item: any) => boolean
 }
 
 export type VespTableOnLoad = (data: {total: number; rows: any[]; [key: string]: any}) => {
@@ -172,10 +172,10 @@ export type VespAuthStore = {
   user: Ref<VespUser | undefined>
   token: Ref<string | undefined>
   loggedIn: Ref<boolean>
-  loadUser: Function
-  login: Function
-  logout: Function
-  setToken: Function
+  loadUser: () => void
+  login: (username: string, password: string) => void
+  logout: () => void
+  setToken: (data: string | undefined) => void
 }
 
 declare module '#app' {

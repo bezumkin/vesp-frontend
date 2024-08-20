@@ -23,7 +23,6 @@
     <BFormGroup label="Text Mask">
       <VespInputTextMask v-model="record.phone" required :state="!!(record.phone && record.phone.length === 12)" />
     </BFormGroup>
-    {{ record.phone }}
 
     <BFormGroup label="Password Input">
       <VespInputPassword v-model="record.password" />
