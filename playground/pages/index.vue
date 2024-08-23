@@ -13,6 +13,9 @@
     sort="title"
     dir="asc"
   >
+    <template #header-start>
+      <VespInputDatePicker v-model="filters.date" />
+    </template>
     <NuxtPage />
   </VespTable>
 </template>
@@ -24,7 +27,7 @@ import type {VespTableAction} from '../../src/module'
 
 const url = 'posts'
 const page = ref(1)
-const filters = ref({query: ''})
+const filters = ref({query: '', date: []})
 const limit = 10
 const table = ref()
 

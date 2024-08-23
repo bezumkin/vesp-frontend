@@ -358,8 +358,14 @@ function getParams(asObject = false) {
   const params: Record<string, any> = {}
   Object.keys(props.filters).forEach((i) => {
     if (props.filters[i] !== '' && props.filters[i] !== null) {
-      params[i] =
-        typeof props.filters[i] === 'object' && !asObject ? JSON.stringify(props.filters[i]) : props.filters[i]
+      if (Array.isArray(props.filters[i])) {
+        props.filters[i].forEach((v2, k2) => {
+          params[`${i}[${k2}]`] = v2
+        })
+      } else {
+        params[i] =
+          typeof props.filters[i] === 'object' && !asObject ? JSON.stringify(props.filters[i]) : props.filters[i]
+      }
     }
   })
   if (tSort.value) {
