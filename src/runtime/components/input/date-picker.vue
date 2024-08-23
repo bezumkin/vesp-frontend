@@ -191,9 +191,6 @@ const myValue = computed({
     } else {
       emit('update:modelValue', formatValue(newValue, true))
     }
-    if (props.type === 'date') {
-      datepicker.value?.closePopup()
-    }
   },
 })
 
