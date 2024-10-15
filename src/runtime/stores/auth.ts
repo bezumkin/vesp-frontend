@@ -12,21 +12,10 @@ export const useVespAuthStore = defineStore('auth', () => {
   const cookie = useCookie(tokenName, {path: '/', maxAge})
   const token = computed<string | undefined>({
     get() {
-      let value = cookie.value
-      if (!value && import.meta.client) {
-        value = localStorage.getItem(tokenName)
-      }
-      return value || undefined
+      return cookie.value || undefined
     },
     set(newValue: string | undefined) {
       cookie.value = newValue
-      if (import.meta.client) {
-        if (newValue) {
-          localStorage.setItem(tokenName, newValue)
-        } else {
-          localStorage.removeItem(tokenName)
-        }
-      }
     },
   })
 

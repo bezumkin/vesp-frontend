@@ -14,6 +14,7 @@ import {
 
 import type {Ref} from 'vue'
 import type {ButtonVariant, Size} from 'bootstrap-vue-next'
+import type {Nuxt} from '@nuxt/schema'
 
 export interface ModuleOptions {
   i18n?: NuxtI18nOptions | false
@@ -61,7 +62,7 @@ export default defineNuxtModule<ModuleOptions>({
       transition: 'Vue-Toastification__slideBlurred',
     },
   },
-  async setup(options, nuxt) {
+  async setup(options: ModuleOptions, nuxt: Nuxt) {
     const {resolve} = createResolver(import.meta.url)
 
     if (options.auth) {
