@@ -27,6 +27,7 @@
         :disabled-time="disabledTime"
         :editable="true"
         :append-to-body="false"
+        :show-second="showSecond"
         @clear="onDateClear"
       >
         <template #icon-calendar>
@@ -136,6 +137,10 @@ const props = defineProps({
   timePickerOptions: {
     type: Object,
     default: null,
+  },
+  showSecond: {
+    type: Boolean,
+    default: true,
   },
 })
 const emit = defineEmits(['update:modelValue'])
