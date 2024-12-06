@@ -186,7 +186,7 @@ declare module '#app' {
   }
 }
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   export interface ComponentCustomProperties {
     $image: (file: VespFile | Record<string, any>, options?: VespFileOptions, prefix?: string) => string
     $scope: (scopes: string | string[]) => boolean
