@@ -92,18 +92,22 @@ export default {
   },
   methods: {
     initPicker() {
-      const Picker = require('vanilla-picker').default
-      this.picker = new Picker(this.$refs.picker)
-      this.picker.setOptions({
-        popup: this.popup,
-        alpha: this.alpha,
-        editor: this.editor,
-        editorFormat: this.editorFormat,
-        color: this.myValue,
-        onChange: this.onChange,
-        onDone: this.onDone,
-        onOpen: this.onOpen,
-      })
+      try {
+        const Picker = require('vanilla-picker').default
+        this.picker = new Picker(this.$refs.picker)
+        this.picker.setOptions({
+          popup: this.popup,
+          alpha: this.alpha,
+          editor: this.editor,
+          editorFormat: this.editorFormat,
+          color: this.myValue,
+          onChange: this.onChange,
+          onDone: this.onDone,
+          onOpen: this.onOpen,
+        })
+      } catch (e) {
+        console.error(e)
+      }
     },
     onChange(color) {
       this.$emit('change', this.alpha ? color.hex : color.hex.slice(0, -2))
@@ -112,7 +116,11 @@ export default {
       this.myValue = this.alpha ? color.hex : color.hex.slice(0, -2)
     },
     onOpen() {
-      this.picker.setOptions({color: this.myValue})
+      try {
+        this.picker.setOptions({color: this.myValue})
+      } catch (e) {
+        console.error(e)
+      }
 
       const inputs = this.$refs.picker.getElementsByTagName('input')
       if (inputs.length) {
