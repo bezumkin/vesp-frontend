@@ -26,5 +26,8 @@ export default defineNuxtConfig({
       {code: 'fr', name: 'Français', language: 'fr-FR'},
     ],
   },
-  compatibilityDate: '2024-08-20',
+  compatibilityDate: '2025-01-07',
+  experimental: {
+    appManifest: false,
+  },
 })

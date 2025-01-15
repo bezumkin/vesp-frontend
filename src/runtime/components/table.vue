@@ -46,8 +46,8 @@
         :sort-by="tSortBy"
         :multisort="tSortBy.length > 1"
         :sort-desc="tDir === 'desc'"
-        :empty-text="$t(emptyText)"
-        :empty-filtered-text="$t(emptyFilteredText)"
+        :empty-text="t(emptyText)"
+        :empty-filtered-text="t(emptyFilteredText)"
         :stacked="stacked"
         :responsive="responsive"
         :show-empty="showEmpty"
@@ -58,7 +58,7 @@
         <template #cell(actions)="{item}">
           <template v-for="(action, idx) in tableActions">
             <BButton
-              v-if="typeof action.isActive !== 'function' || action.isActive(item) === true"
+              v-if="typeof action.isActive !== 'function' || action.isActive(item)"
               :key="idx"
               :size="action.size || 'sm'"
               :variant="action.variant || 'secondary'"
@@ -115,7 +115,7 @@
         @hidden="onDeleteCancel"
       >
         <BOverlay :opacity="0.5" :show="deleteLoading">
-          <div v-html="$t(deleteText)" />
+          <div v-html="t(deleteText)" />
         </BOverlay>
       </VespConfirm>
     </slot>
@@ -124,8 +124,9 @@
 
 <script setup lang="ts">
 import {computed, type PropType, type Ref, ref, watch, type ComputedRef} from 'vue'
-import type {Breakpoint, TableField, TableItem, BTableSortBy} from 'bootstrap-vue-next'
-import type {BTableSortByOrder} from 'bootstrap-vue-next/src/types/TableTypes.ts'
+import type {Breakpoint, TableField, BTableSortBy} from 'bootstrap-vue-next'
+// @ts-ignore
+import type {BTableSortByOrder, TableStrictClassValue} from 'bootstrap-vue-next/dist/src/types/TableTypes'
 import type {RouteLocationNamedRaw} from 'vue-router'
 import {useI18n} from 'vue-i18n'
 import type {VespTableAction, VespTableOnLoad} from '../../module'
@@ -199,7 +200,7 @@ const props = defineProps({
     },
   },
   rowClass: {
-    type: Function as PropType<(item: TableItem | null, type: string) => string | any[] | null | undefined>,
+    type: Function as PropType<TableStrictClassValue>,
     default() {
       return ''
     },
@@ -297,6 +298,12 @@ const {
 })
 const total = computed(() => data.value?.total || 0)
 const items = computed(() => data.value?.rows || [])
+
+function setItems(rows: Record<string, any>[]) {
+  if (data.value) {
+    data.value = {...data.value, rows}
+  }
+}
 
 function onSort(value: BTableSortBy | string) {
   if (typeof value === 'string') {
@@ -404,12 +411,13 @@ async function deleteItem() {
     deleteVisible.value = false
     await refresh()
   } catch (e) {
+    console.error(e)
   } finally {
     deleteLoading.value = false
   }
 }
 
-defineExpose({getParams, page: tPage, sort: tSort, dir: tDir, loading, delete: onDelete, refresh, items})
+defineExpose({getParams, page: tPage, sort: tSort, dir: tDir, loading, delete: onDelete, refresh, items, setItems})
 
 watch(tPage, () => {
   refresh()
