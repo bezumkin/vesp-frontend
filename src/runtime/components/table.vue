@@ -37,6 +37,8 @@
       </BRow>
     </slot>
 
+    <slot name="subheader" />
+
     <BOverlay :show="loading" opacity="0.25">
       <BTable
         :items="items"
