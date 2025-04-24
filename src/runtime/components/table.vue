@@ -200,7 +200,7 @@ const props = defineProps({
     },
   },
   rowClass: {
-    type: Function as PropType<TableStrictClassValue>,
+    type: Function as PropType<(item: any) => TableStrictClassValue>,
     default() {
       return ''
     },
@@ -343,9 +343,15 @@ function mapRouteParams(action: VespTableAction, item: Record<string, any>): Rou
     const val = action.map[key]
     if (/\./.test(val)) {
       const keys = val.split('.')
-      let local = {...item}
+      let local: object | string = {...item}
       for (const i of keys) {
-        local = local[i]
+        if (local && typeof local === 'object' && i in local) {
+          // @ts-ignore
+          local = local[i]
+        } else {
+          local = ''
+          break
+        }
       }
       params[key] = local
     } else {
