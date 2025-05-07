@@ -131,7 +131,7 @@ async function submit() {
     return
   }
   try {
-    const values = props.beforeSubmit(JSON.parse(JSON.stringify(record.value)))
+    const values = await props.beforeSubmit(JSON.parse(JSON.stringify(record.value)))
     if (values) {
       if (typeof values === 'string') {
         useToastError(values)
