@@ -40,7 +40,7 @@
     <slot name="subheader" />
 
     <BOverlay :show="loading" opacity="0.25">
-      <BTable v-bind="tableProps">
+      <BTable ref="table" v-bind="tableProps">
         <template #cell(actions)="{item}">
           <template v-for="(action, idx) in tableActions">
             <BButton
@@ -232,6 +232,7 @@ const props = defineProps({
 })
 
 const {t} = useI18n()
+const table = ref()
 const internalValue = ref(1)
 const tSort = ref(props.sort)
 const tDir = ref(props.dir)
@@ -447,7 +448,34 @@ async function deleteItem() {
   }
 }
 
-defineExpose({getParams, page: tPage, sort: tSort, dir: tDir, loading, delete: onDelete, refresh, items, setItems})
+const exposeObject: Record<string, any> = {
+  getParams,
+  page: tPage,
+  sort: tSort,
+  dir: tDir,
+  loading,
+  delete: onDelete,
+  refresh,
+  items,
+  setItems,
+}
+
+const addToExpose = [
+  'clearSelected',
+  'selectAllRows',
+  'selectRow',
+  'unselectRow',
+  'isRowSelected',
+  'displayItems',
+  'getStringValue',
+]
+addToExpose.forEach((key) => {
+  exposeObject[key] = function (args: any) {
+    return key in table.value ? table.value[key].apply(table.value, args) : undefined
+  }
+})
+
+defineExpose(exposeObject)
 
 watch(tPage, () => {
   refresh()
