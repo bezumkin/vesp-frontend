@@ -93,8 +93,9 @@ const props = defineProps({
 })
 
 const showModal = ref(false)
+const attrs = useAttrs()
 const modalProps = computed(() => {
-  const values = {...useAttrs(), ...props}
+  const values = {...props, ...attrs}
   delete values.modelValue
   delete values.show
   delete values.url

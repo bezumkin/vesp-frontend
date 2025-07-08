@@ -12,6 +12,9 @@
     :limit="limit"
     sort="title"
     dir="asc"
+    selectable
+    @row-selected="onRowSelected"
+    @row-unselected="onRowUnselected"
   >
     <template #header-start>
       <VespInputDatePicker v-model="filters.date" />
@@ -90,4 +93,12 @@ mergeLocaleMessage('fr', {
     table: {columns: {id: 'Id', userId: 'Utilisateur Id', title: 'Titre', body: 'Texte'}},
   },
 })
+
+function onRowSelected(item: any) {
+  console.log('Selected row: ', {...item})
+}
+
+function onRowUnselected(item: any) {
+  console.log('Unselected row: ', {...item})
+}
 </script>

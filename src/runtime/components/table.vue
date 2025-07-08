@@ -40,23 +40,7 @@
     <slot name="subheader" />
 
     <BOverlay :show="loading" opacity="0.25">
-      <BTable
-        :items="items"
-        :fields="tFields"
-        :class="tableClass"
-        :per-page="tLimit"
-        :sort-by="tSortBy"
-        :multisort="tSortBy.length > 1"
-        :sort-desc="tDir === 'desc'"
-        :empty-text="t(emptyText)"
-        :empty-filtered-text="t(emptyFilteredText)"
-        :stacked="stacked"
-        :responsive="responsive"
-        :show-empty="showEmpty"
-        :no-local-sorting="true"
-        :tbody-tr-class="rowClass"
-        @sorted="onSort"
-      >
+      <BTable v-bind="tableProps">
         <template #cell(actions)="{item}">
           <template v-for="(action, idx) in tableActions">
             <BButton
@@ -125,7 +109,8 @@
 </template>
 
 <script setup lang="ts">
-import {computed, type PropType, type Ref, ref, watch, type ComputedRef} from 'vue'
+import {computed, type PropType, type Ref, ref, watch, type ComputedRef, useAttrs} from 'vue'
+import {BTable} from 'bootstrap-vue-next'
 import type {Breakpoint, TableField, BTableSortBy} from 'bootstrap-vue-next'
 // @ts-ignore
 import type {BTableSortByOrder, TableStrictClassValue} from 'bootstrap-vue-next/dist/src/types/TableTypes'
@@ -137,6 +122,7 @@ import VespConfirm from './confirm.vue'
 
 const emit = defineEmits(['update:modelValue', 'update:sort', 'update:dir', 'update:limit', 'update:filters', 'delete'])
 const props = defineProps({
+  ...BTable.props,
   modelValue: {
     type: Number,
     default: null,
@@ -272,6 +258,42 @@ const tFields = computed(() => {
 })
 const hasQuery = computed(() => {
   return Object.keys(tFilters.value).includes('query')
+})
+
+const attrs = useAttrs()
+const tableProps = computed(() => {
+  const values = {
+    ...props,
+    ...{
+      url: props.url,
+      items: items.value,
+      fields: tFields.value,
+      class: props.tableClass,
+      perPage: tLimit.value,
+      sortBy: tSortBy.value,
+      multisort: tSortBy.value.length > 1,
+      emptyText: t(props.emptyText),
+      emptyFilteredText: t(props.emptyFilteredText),
+      noLocalSorting: true,
+      tbodyTrClass: props.rowClass,
+      onSorted: onSort,
+    },
+    ...attrs,
+  }
+  delete values.headerActions
+  delete values.tableActions
+  delete values.filters
+  delete values.rowClass
+  delete values.deleteTitle
+  delete values.deleteText
+  delete values.url
+  delete values.updateKey
+  delete values.sort
+  delete values.dir
+  delete values.limit
+  delete values.pageLimit
+
+  return values
 })
 const updateKey = props.updateKey || props.url.split('/').join('-')
 
