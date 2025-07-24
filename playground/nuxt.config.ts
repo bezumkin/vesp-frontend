@@ -1,9 +1,7 @@
 import {defineNuxtConfig} from 'nuxt/config'
 
 export default defineNuxtConfig({
-  telemetry: false,
   css: ['~/assets/index.scss'],
-  devtools: {enabled: false},
   ssr: true,
   runtimeConfig: {
     public: {
@@ -26,8 +24,5 @@ export default defineNuxtConfig({
       {code: 'fr', name: 'Français', language: 'fr-FR'},
     ],
   },
-  compatibilityDate: '2025-01-07',
-  experimental: {
-    appManifest: false,
-  },
+  compatibilityDate: '2025-07-24',
 })
