@@ -128,7 +128,7 @@ export type VespTableAction = {
   isActive?: (item: any) => boolean
 }
 
-export type VespTableOnLoad = (data: {total: number; rows: any[]; [key: string]: any}) => {
+export type VespTableOnLoad = (data: {total: number, rows: any[], [key: string]: any}) => {
   total: number
   rows: any[]
   [key: string]: any

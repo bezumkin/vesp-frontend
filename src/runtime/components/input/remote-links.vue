@@ -4,7 +4,9 @@
       <template #prepend>
         <BFormSelect v-model="form.service" :options="myServices">
           <template #first>
-            <BFormSelectOption :value="null" disabled selected>---</BFormSelectOption>
+            <BFormSelectOption :value="null" disabled selected>
+              ---
+            </BFormSelectOption>
           </template>
         </BFormSelect>
       </template>
@@ -21,7 +23,9 @@
     <BTableSimple :responsive="true" class="vesp-table">
       <BTbody>
         <BTr v-for="(link, service) in myValue" :key="link">
-          <BTd class="align-middle border-bottom">{{ getTitle(service) }}</BTd>
+          <BTd class="align-middle border-bottom">
+            {{ getTitle(service) }}
+          </BTd>
           <BTd class="align-middle border-bottom">
             <a v-if="service === 'email'" :href="'mailto:' + link" target="_blank" v-text="link" />
             <a v-else :href="link" target="_blank" v-text="link" />
@@ -90,8 +94,8 @@ function onAdd() {
     return
   }
   const value = JSON.parse(JSON.stringify(myValue.value))
-  value[form.value.service] =
-    !form.value.link.startsWith('http') && !/@/.test(form.value.link) ? 'https://' + form.value.link : form.value.link
+  value[form.value.service]
+    = !form.value.link.startsWith('http') && !/@/.test(form.value.link) ? 'https://' + form.value.link : form.value.link
   myValue.value = value
   form.value.service = ''
   form.value.link = ''
@@ -99,6 +103,7 @@ function onAdd() {
 
 function onDelete(key: string) {
   const value = JSON.parse(JSON.stringify(myValue.value))
+  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
   delete value[key]
   myValue.value = value
 }

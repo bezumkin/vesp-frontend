@@ -19,7 +19,7 @@
         </BCol>
 
         <BCol md="4">
-          <slot name="header-middle"></slot>
+          <slot name="header-middle" />
         </BCol>
 
         <BCol md="4" class="mt-2 mt-md-0">
@@ -53,7 +53,9 @@
               @click="onClick(action, item)"
             >
               <VespFa v-if="action.icon" :icon="action.icon" fixed-width />
-              <template v-else>{{ action.title }}</template>
+              <template v-else>
+                {{ action.title }}
+              </template>
             </BButton>
           </template>
         </template>
@@ -401,8 +403,8 @@ function getParams(asObject = false) {
           params[`${i}[${k2}]`] = v2
         })
       } else {
-        params[i] =
-          typeof props.filters[i] === 'object' && !asObject ? JSON.stringify(props.filters[i]) : props.filters[i]
+        params[i]
+          = typeof props.filters[i] === 'object' && !asObject ? JSON.stringify(props.filters[i]) : props.filters[i]
       }
     }
   })
@@ -471,6 +473,7 @@ const addToExpose = [
 ]
 addToExpose.forEach((key) => {
   exposeObject[key] = function (args: any) {
+    // eslint-disable-next-line prefer-spread
     return key in table.value ? table.value[key].apply(table.value, args) : undefined
   }
 })

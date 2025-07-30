@@ -5,7 +5,7 @@
         <BOverlay :opacity="0.5" :show="loading">
           <BForm ref="form" @submit.prevent="submit" @keydown="onKeydown">
             <slot name="form-fields" v-bind="{record, loading, hide, submit}" />
-            <input type="submit" class="d-none" />
+            <input type="submit" class="d-none">
           </BForm>
         </BOverlay>
       </template>

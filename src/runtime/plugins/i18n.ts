@@ -10,7 +10,7 @@ import fr from '../lexicons/fr'
 export default defineNuxtPlugin((nuxtApp) => {
   const i18n = nuxtApp.$i18n as Composer
 
-  const timeZone = process.client ? window?.__NUXT__?.config.public.TZ : process.env.TZ
+  const timeZone = import.meta.client ? window?.__NUXT__?.config.public.TZ : process.env.TZ
   const dateFormat: DateTimeFormat = {
     short: {
       year: 'numeric',

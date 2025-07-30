@@ -4,7 +4,7 @@ import Toast from 'vue-toastification'
 import {options} from '#build/vesp.toast.mjs'
 
 export default defineNuxtPlugin(({vueApp}) => {
-  if (process.client) {
+  if (import.meta.client) {
     vueApp.use(Toast, options)
   }
 })

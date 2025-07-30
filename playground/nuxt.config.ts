@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     },
   },
   vite: {css: {preprocessorOptions: {scss: {quietDeps: true}}}},
-  modules: ['../src/module.ts'],
+  modules: ['@nuxt/eslint', '../src/module.ts'],
   vesp: {
     icons: {
       solid: ['faUser', 'faUsers', 'faList'],
@@ -23,6 +23,19 @@ export default defineNuxtConfig({
       {code: 'nl', name: 'Nederlands', language: 'nl-NL'},
       {code: 'fr', name: 'Français', language: 'fr-FR'},
     ],
+  },
+  eslint: {
+    checker: true,
+    config: {
+      stylistic: {
+        semi: false,
+        arrowParens: true,
+        quotes: 'single',
+        commaDangle: 'always-multiline',
+        braceStyle: '1tbs',
+        blockSpacing: false,
+      },
+    },
   },
   compatibilityDate: '2025-07-24',
 })

@@ -19,7 +19,7 @@
       </template>
     </BInputGroup>
 
-    <ul :class="{'dropdown-menu vesp-combo-list': true, show: dropdown}">
+    <ul :class="{'dropdown-menu vesp-combo-list': true, 'show': dropdown}">
       <slot v-if="!options.length" name="no-results" v-bind="{hideDropdown, emptyText}">
         <li class="alert alert-info m-0" @click="hideDropdown" v-text="emptyText" />
       </slot>
@@ -155,7 +155,6 @@ watch(
     if (!props.lazy) {
       await fetch('')
       if (internalValue.value) {
-        // eslint-disable-next-line eqeqeq
         if (options.value.findIndex((item: any) => item[props.valueField] == internalValue.value) === -1) {
           reset()
         }
@@ -324,17 +323,16 @@ async function setValue(value: string | number) {
   if (!value) {
     reset()
   } else {
-    // eslint-disable-next-line eqeqeq
     if (options.value.findIndex((item: any) => item[props.valueField] == value) === -1) {
       const params = {...props.filterProps, combo: true}
       params[props.valueField] = value
       const data = await useGet(props.url, params)
-      // eslint-disable-next-line eqeqeq
+
       if (data[props.valueField] == value) {
         options.value.push(data)
       }
     }
-    // eslint-disable-next-line eqeqeq
+
     const idx = options.value.findIndex((item: any) => item[props.valueField] == value)
     if (idx !== -1) {
       onSelect(idx)
