@@ -122,7 +122,7 @@ import type {VespTableAction, VespTableOnLoad} from '../../module'
 import {useCustomFetch, useDelete} from '../utils/use-api'
 import VespConfirm from './confirm.vue'
 
-const emit = defineEmits(['update:modelValue', 'update:sort', 'update:dir', 'update:limit', 'update:filters', 'delete'])
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
   ...BTable.props,
   modelValue: {
@@ -241,8 +241,8 @@ const tDir = ref(props.dir)
 const tSortBy: ComputedRef<BTableSortBy[]> = computed(() => {
   return [{key: props.sort, order: (props.dir || 'asc') as BTableSortByOrder}]
 })
-const tLimit = ref(props.limit)
 const tFilters = ref(props.filters)
+const tLimit = computed(() => props.limit)
 const tPage = computed({
   get() {
     return props.modelValue === null ? internalValue.value : props.modelValue
