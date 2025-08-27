@@ -31,7 +31,7 @@ import type {VespTableAction} from '../../src/module'
 const url = 'posts'
 const page = ref(1)
 const filters = ref({query: '', date: []})
-const limit = 10
+const limit = ref(10)
 const table = ref()
 
 const {t, mergeLocaleMessage} = useI18n()
@@ -61,9 +61,9 @@ function onLoad(items: Record<string, any>) {
       (row: any) => row.title.includes(filters.value.query) || row.body.includes(filters.value.query),
     )
   }
-  const offset = (page.value - 1) * limit
+  const offset = (page.value - 1) * limit.value
   return {
-    rows: items.slice(offset, offset + limit),
+    rows: items.slice(offset, offset + limit.value),
     total: items.length,
   }
 }

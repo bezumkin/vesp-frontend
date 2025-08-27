@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import {useGet} from '../../../../src/runtime/utils/use-api'
+
 const record = ref()
 
 const url = 'posts/' + useRoute().params.id
