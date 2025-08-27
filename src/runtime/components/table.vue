@@ -235,6 +235,12 @@ const props = defineProps({
     type: String,
     default: 'components.table.delete.confirm',
   },
+  ignoreWatch: {
+    type: Array,
+    default() {
+      return []
+    },
+  },
 })
 
 const {t} = useI18n()
@@ -300,6 +306,7 @@ const tableProps = computed(() => {
   delete values.dir
   delete values.limit
   delete values.pageLimit
+  delete values.ignoreWatch
 
   return values
 })
@@ -487,19 +494,29 @@ addToExpose.forEach((key) => {
 
 defineExpose(exposeObject)
 
-let timeout: number
-watch(tFilters, () => {
-  if (timeout) {
-    clearTimeout(timeout)
-  }
-  timeout = setTimeout(() => {
-    if (tPage.value !== 1) {
-      tPage.value = 1
-    } else {
-      refresh()
+if (!props.ignoreWatch.includes('filters')) {
+  let timeout: number
+  watch(tFilters, () => {
+    if (timeout) {
+      clearTimeout(timeout)
     }
-  }, props.filtersDelay)
-}, {deep: true})
-
-watch([tLimit, tPage, tSort, tDir], () => refresh())
+    // @ts-ignore
+    timeout = setTimeout(() => {
+      if (tPage.value !== 1) {
+        tPage.value = 1
+      } else {
+        refresh()
+      }
+    }, props.filtersDelay)
+  }, {deep: true})
+}
+if (!props.ignoreWatch.includes('limit')) {
+  watch(tLimit, () => refresh())
+}
+if (!props.ignoreWatch.includes('page')) {
+  watch(tPage, () => refresh())
+}
+if (!props.ignoreWatch.includes('sort')) {
+  watch([tSort, tDir], () => refresh())
+}
 </script>
