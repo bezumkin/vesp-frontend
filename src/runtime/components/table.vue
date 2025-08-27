@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, type PropType, type Ref, ref, watch, type ComputedRef, useAttrs} from 'vue'
+import {computed, type PropType, type Ref, ref, watch, useAttrs} from 'vue'
 import {BTable} from 'bootstrap-vue-next'
 import type {Breakpoint, TableField, BTableSortBy} from 'bootstrap-vue-next'
 // @ts-ignore
@@ -144,6 +144,10 @@ const props = defineProps({
     default() {
       return {}
     },
+  },
+  filtersDelay: {
+    type: Number,
+    default: 500,
   },
   updateKey: {
     type: String,
@@ -238,10 +242,10 @@ const table = ref()
 const internalValue = ref(1)
 const tSort = ref(props.sort)
 const tDir = ref(props.dir)
-const tSortBy: ComputedRef<BTableSortBy[]> = computed(() => {
+const tSortBy = computed<BTableSortBy[]>(() => {
   return [{key: props.sort, order: (props.dir || 'asc') as BTableSortByOrder}]
 })
-const tFilters = ref(props.filters)
+const tFilters = computed(() => props.filters)
 const tLimit = computed(() => props.limit)
 const tPage = computed({
   get() {
@@ -286,6 +290,7 @@ const tableProps = computed(() => {
   delete values.headerActions
   delete values.tableActions
   delete values.filters
+  delete values.filtersDelay
   delete values.rowClass
   delete values.deleteTitle
   delete values.deleteText
@@ -319,6 +324,7 @@ const {
 } = useCustomFetch(props.url, {
   key: updateKey,
   query: params,
+  watch: false,
   onResponse({response}) {
     response._data = props.onLoad(response._data)
   },
@@ -347,7 +353,6 @@ function onSort(value: BTableSortBy | string) {
     tSort.value = ''
     tDir.value = ''
   }
-  refresh()
 }
 
 function mapRouteParams(action: VespTableAction, item: Record<string, any>): RouteLocationNamedRaw | undefined {
@@ -367,7 +372,7 @@ function mapRouteParams(action: VespTableAction, item: Record<string, any>): Rou
   }
   const params: Record<string, any> = {}
   for (const key of Object.keys(action.map)) {
-    const val = action.map[key]
+    const val = action.map[key] as string
     if (/\./.test(val)) {
       const keys = val.split('.')
       let local: object | string = {...item}
@@ -403,8 +408,9 @@ function getParams(asObject = false) {
           params[`${i}[${k2}]`] = v2
         })
       } else {
-        params[i]
-          = typeof props.filters[i] === 'object' && !asObject ? JSON.stringify(props.filters[i]) : props.filters[i]
+        params[i] = typeof props.filters[i] === 'object' && !asObject
+          ? JSON.stringify(props.filters[i])
+          : props.filters[i]
       }
     }
   })
@@ -455,6 +461,7 @@ const exposeObject: Record<string, any> = {
   page: tPage,
   sort: tSort,
   dir: tDir,
+  limit: tLimit,
   loading,
   delete: onDelete,
   refresh,
@@ -480,17 +487,19 @@ addToExpose.forEach((key) => {
 
 defineExpose(exposeObject)
 
-watch(tPage, () => {
-  refresh()
-})
-watch(
-  tFilters,
-  () => {
+let timeout: number
+watch(tFilters, () => {
+  if (timeout) {
+    clearTimeout(timeout)
+  }
+  timeout = setTimeout(() => {
     if (tPage.value !== 1) {
       tPage.value = 1
+    } else {
+      refresh()
     }
-    refresh()
-  },
-  {deep: true},
-)
+  }, props.filtersDelay)
+}, {deep: true})
+
+watch([tLimit, tPage, tSort, tDir], () => refresh())
 </script>
