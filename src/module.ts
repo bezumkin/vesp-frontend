@@ -126,6 +126,7 @@ export type VespTableAction = {
   map?: Record<string, string>
   key?: string
   isActive?: (item: any) => boolean
+  isDisabled?: (item: any | undefined) => boolean
 }
 
 export type VespTableOnLoad = (data: {total: number, rows: any[], [key: string]: any}) => {

@@ -4,17 +4,20 @@
       <BRow class="align-items-center mb-3">
         <BCol md="4">
           <slot name="header-start">
-            <BButton
-              v-for="(action, idx) in headerActions"
-              :key="idx"
-              :size="action.size || 'md'"
-              :variant="action.variant || 'secondary'"
-              :class="action.class || (!idx ? 'col-12 col-md-auto' : 'col-12 col-md-auto ms-md-2 mt-2 mt-md-0')"
-              :to="action.route"
-              @click="action.function"
-            >
-              <VespFa v-if="action.icon" :icon="action.icon" fixed-width /> {{ action.title }}
-            </BButton>
+            <template v-for="(action, idx) in headerActions">
+              <BButton
+                v-if="typeof action.isActive !== 'function' || action.isActive()"
+                :key="idx"
+                :size="action.size || 'md'"
+                :variant="action.variant || 'secondary'"
+                :class="action.class || (!idx ? 'col-12 col-md-auto' : 'col-12 col-md-auto ms-md-2 mt-2 mt-md-0')"
+                :to="action.route"
+                :disabled="typeof action.isDisabled === 'function' && action.isDisabled()"
+                @click="action.function"
+              >
+                <VespFa v-if="action.icon" :icon="action.icon" fixed-width /> {{ action.title }}
+              </BButton>
+            </template>
           </slot>
         </BCol>
 
@@ -49,6 +52,7 @@
               :size="action.size || 'sm'"
               :variant="action.variant || 'secondary'"
               :class="action.class"
+              :disabled="typeof action.isDisabled === 'function' && action.isDisabled(item)"
               v-bind="action.route ? {to: mapRouteParams(action, item)} : {}"
               @click="onClick(action, item)"
             >
