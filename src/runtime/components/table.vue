@@ -53,6 +53,7 @@
               :variant="action.variant || 'secondary'"
               :class="action.class"
               :disabled="typeof action.isDisabled === 'function' && action.isDisabled(item)"
+              :title="action.icon ? action.title : undefined"
               v-bind="action.route ? {to: mapRouteParams(action, item)} : {}"
               @click="onClick(action, item)"
             >
