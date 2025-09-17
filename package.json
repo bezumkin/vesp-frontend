@@ -2,7 +2,7 @@
   "license": "MIT",
   "name": "@vesp/frontend",
   "description": "Nuxt 3 based frontend for your Vesp project",
-  "version": "5.4.1",
+  "version": "5.5.2",
   "type": "module",
   "exports": {
     ".": {
@@ -37,7 +37,7 @@
     "analyze": "nuxi analyze",
     "build": "nuxt-module-build build",
     "prepare": "nuxt-module-build prepare && nuxi prepare playground",
-    "dev": "nuxi dev playground",
+    "dev": "nuxi dev playground --port 5173",
     "dev:build": "nuxi build playground",
     "typecheck": "nuxt typecheck",
     "lint": "eslint ./src",

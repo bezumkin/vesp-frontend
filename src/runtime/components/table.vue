@@ -4,20 +4,12 @@
       <BRow class="align-items-center mb-3">
         <BCol md="4">
           <slot name="header-start">
-            <template v-for="(action, idx) in headerActions">
-              <BButton
-                v-if="typeof action.isActive !== 'function' || action.isActive()"
-                :key="idx"
-                :size="action.size || 'md'"
-                :variant="action.variant || 'secondary'"
-                :class="action.class || (!idx ? 'col-12 col-md-auto' : 'col-12 col-md-auto ms-md-2 mt-2 mt-md-0')"
-                :to="action.route"
-                :disabled="typeof action.isDisabled === 'function' && action.isDisabled()"
-                @click="action.function"
-              >
-                <VespFa v-if="action.icon" :icon="action.icon" fixed-width /> {{ action.title }}
-              </BButton>
-            </template>
+            <VespTableHeaderAction
+              v-for="(action, idx) in headerActions"
+              :key="idx"
+              :action="action"
+              :class="action.class || (!idx ? 'col-12 col-md-auto' : 'col-12 col-md-auto ms-md-2 mt-2 mt-md-0')"
+            />
           </slot>
         </BCol>
 
@@ -27,14 +19,7 @@
 
         <BCol md="4" class="mt-2 mt-md-0">
           <slot name="header-end">
-            <BInputGroup v-if="hasQuery">
-              <template #append>
-                <BButton :disabled="!tFilters.query" @click="tFilters.query = null">
-                  <VespFa icon="times" fixed-width />
-                </BButton>
-              </template>
-              <BFormInput v-model="tFilters.query" :placeholder="t('components.table.query')" />
-            </BInputGroup>
+            <VespTableQuery v-if="hasQuery" v-model="tFilters.query" />
           </slot>
         </BCol>
       </BRow>
@@ -45,24 +30,7 @@
     <BOverlay :show="loading" opacity="0.25">
       <BTable ref="table" v-bind="tableProps">
         <template #cell(actions)="{item}">
-          <template v-for="(action, idx) in tableActions">
-            <BButton
-              v-if="typeof action.isActive !== 'function' || action.isActive(item)"
-              :key="idx"
-              :size="action.size || 'sm'"
-              :variant="action.variant || 'secondary'"
-              :class="action.class"
-              :disabled="typeof action.isDisabled === 'function' && action.isDisabled(item)"
-              :title="action.icon ? action.title : undefined"
-              v-bind="action.route ? {to: mapRouteParams(action, item)} : {}"
-              @click="onClick(action, item)"
-            >
-              <VespFa v-if="action.icon" :icon="action.icon" fixed-width />
-              <template v-else>
-                {{ action.title }}
-              </template>
-            </BButton>
-          </template>
+          <VespTableRowAction v-for="(action, idx) in tableActions" :key="idx" :action="action" :item="item" />
         </template>
 
         <template v-for="slotName in Object.keys($slots)" #[slotName]="slotProps">
@@ -70,31 +38,16 @@
         </template>
       </BTable>
     </BOverlay>
-
-    <slot name="footer" v-bind="{refresh, total, page: tPage, limit, loading}">
-      <BRow class="mt-5 align-items-center justify-content-center justify-content-md-start" no-gutters>
-        <BCol cols="12" md="auto" class="d-flex justify-content-center">
-          <slot name="pagination" v-bind="{refresh, total, page: tPage, limit, loading}">
-            <BPagination
-              v-if="total > limit"
-              v-model="tPage"
-              :total-rows="total"
-              :per-page="limit"
-              :limit="pageLimit"
-              class="mb-md-0 me-md-3"
-            />
-          </slot>
-        </BCol>
-        <BCol cols="12" md="auto" class="d-flex align-items-center justify-content-center gap-2">
-          <slot name="pagination-data" v-bind="{refresh, total, page: tPage, limit, loading}">
-            <BButton class="border-0" @click="() => refresh()">
-              <BSpinner v-if="loading" :small="true" />
-              <VespFa v-else icon="repeat" fixed-width />
-            </BButton>
-            {{ t('components.table.records', {total}, total) }}
-          </slot>
-        </BCol>
-      </BRow>
+    <slot name="footer" v-bind="{refresh, total, page: tPage, limit, loading, pageLimit}">
+      <VespTablePagination
+        v-model="tPage"
+        :total="total"
+        :limit="limit"
+        :page-limit="pageLimit"
+        :loading="loading"
+        class="mt-5 align-items-center justify-content-center justify-content-md-start g-0"
+        @refresh="refresh"
+      />
     </slot>
 
     <slot name="default" />
@@ -121,11 +74,14 @@ import {BTable} from 'bootstrap-vue-next'
 import type {Breakpoint, TableField, BTableSortBy} from 'bootstrap-vue-next'
 // @ts-ignore
 import type {BTableSortByOrder, TableStrictClassValue} from 'bootstrap-vue-next/dist/src/types/TableTypes'
-import type {RouteLocationNamedRaw} from 'vue-router'
 import {useI18n} from 'vue-i18n'
 import type {VespTableAction, VespTableOnLoad} from '../../module'
 import {useCustomFetch, useDelete} from '../utils/use-api'
 import VespConfirm from './confirm.vue'
+import VespTablePagination from './table/pagination.vue'
+import VespTableHeaderAction from './table/header-action.vue'
+import VespTableRowAction from './table/row-action.vue'
+import VespTableQuery from './table/query.vue'
 
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
@@ -367,50 +323,6 @@ function onSort(value: BTableSortBy | string) {
   }
 }
 
-function mapRouteParams(action: VespTableAction, item: Record<string, any>): RouteLocationNamedRaw | undefined {
-  if (!action.route) {
-    return undefined
-  }
-  if (!action.map) {
-    action.map = {}
-    if (Array.isArray(props.primaryKey)) {
-      props.primaryKey.forEach((i: any) => {
-        // @ts-ignore
-        action.map[i] = i
-      })
-    } else {
-      action.map[props.primaryKey] = props.primaryKey
-    }
-  }
-  const params: Record<string, any> = {}
-  for (const key of Object.keys(action.map)) {
-    const val = action.map[key] as string
-    if (/\./.test(val)) {
-      const keys = val.split('.')
-      let local: object | string = {...item}
-      for (const i of keys) {
-        if (local && typeof local === 'object' && i in local) {
-          // @ts-ignore
-          local = local[i]
-        } else {
-          local = ''
-          break
-        }
-      }
-      params[key] = local
-    } else {
-      params[key] = item[val]
-    }
-  }
-  return {...action.route, params}
-}
-
-function onClick(action: VespTableAction, item: Record<string, any>) {
-  if (action.function) {
-    action.function(JSON.parse(JSON.stringify(item)))
-  }
-}
-
 function getParams(asObject = false) {
   const params: Record<string, any> = {}
   Object.keys(props.filters).forEach((i) => {
@@ -474,10 +386,12 @@ const exposeObject: Record<string, any> = {
   sort: tSort,
   dir: tDir,
   limit: tLimit,
+  pageLimit: props.pageLimit,
   loading,
   delete: onDelete,
   refresh,
   items,
+  total,
   setItems,
 }
 

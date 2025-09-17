@@ -125,7 +125,7 @@ export type VespTableAction = {
   title?: string
   map?: Record<string, string>
   key?: string
-  isActive?: (item: any) => boolean
+  isActive?: (item: any | undefined) => boolean
   isDisabled?: (item: any | undefined) => boolean
 }
 
