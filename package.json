@@ -67,7 +67,7 @@
     "@nuxt/eslint": "^1.7.1",
     "@nuxt/module-builder": "^1.0.1",
     "@nuxtjs/stylelint-module": "^5.2.1",
-    "nuxt": "^4.0.2",
+    "nuxt": "^4.1.0",
     "sass": "~1.79.6",
     "sass-loader": "^16.0.4",
     "stylelint-config-recommended-vue": "^1.6.1",
