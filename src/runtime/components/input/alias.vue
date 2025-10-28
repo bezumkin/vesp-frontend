@@ -6,7 +6,7 @@
 // eslint-disable-next-line vue/no-dupe-keys
 import {computed, watch} from 'vue'
 import {BFormInput} from 'bootstrap-vue-next'
-import Slugify from 'slugify'
+import slug from 'slug'
 
 const props = defineProps({
   ...BFormInput.props,
@@ -37,7 +37,7 @@ watch(
 )
 
 function formatValue(value: string) {
-  return Slugify(value, {
+  return slug(value, {
     replacement: '-',
     remove: /[^\w\s-]+/g,
     lower: true,
