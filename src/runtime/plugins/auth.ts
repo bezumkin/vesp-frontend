@@ -1,11 +1,10 @@
-import {defineNuxtPlugin} from '#app'
-import useAuth from '../utils/use-auth'
+import {defineNuxtPlugin, callOnce} from '#app'
+import useAuth from '../utils/use-auth.js'
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(async () => {
   const auth = useAuth()
 
-  // Load user profile
-  nuxtApp.hook('app:created', async () => {
+  const onInit = async () => {
     if (auth.token.value) {
       try {
         await auth.loadUser()
@@ -15,7 +14,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
       }
     }
-  })
+  }
+
+  await callOnce(onInit)
 
   return {
     provide: {auth},
