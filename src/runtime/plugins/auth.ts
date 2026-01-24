@@ -16,7 +16,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }
   }
 
-  await callOnce(onInit)
+  await callOnce('auth-user', onInit)
 
   return {
     provide: {auth},
