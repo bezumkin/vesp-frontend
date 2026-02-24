@@ -1,4 +1,4 @@
-import type {FetchContext, FetchOptions} from 'ofetch'
+import type {FetchContext, FetchOptions, FetchRequest} from 'ofetch'
 import {ofetch} from 'ofetch'
 import type {UseFetchOptions} from 'nuxt/app'
 import type {Composer} from 'vue-i18n'
@@ -36,10 +36,10 @@ export function useApi(endpoint: string, options: FetchOptions<any> = {}) {
   })
 }
 
-export function useCustomFetch(endpoint: string, options: UseFetchOptions<any> = {}) {
+export function useCustomFetch(endpoint: FetchRequest, options: UseFetchOptions<any> = {}) {
   return useFetch(endpoint, {
     baseURL: getApiUrl(),
-    key: options.key || endpoint.split('/').join('-'),
+    key: options.key || (typeof endpoint === 'string' ? endpoint.split('/').join('-') : undefined),
     onRequest,
     onResponseError,
     ...options,
