@@ -18,7 +18,9 @@
           <BSpinner v-if="loading" :small="true" />
           <VespFa v-else icon="repeat" fixed-width />
         </BButton>
-        {{ formatTotal(total) }}
+        <slot name="pagination-data" v-bind="{formatTotal, total}">
+          {{ formatTotal(total) }}
+        </slot>
       </slot>
     </BCol>
   </BRow>

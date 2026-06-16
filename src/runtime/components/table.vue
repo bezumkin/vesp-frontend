@@ -34,7 +34,7 @@
         </template>
 
         <template v-for="slotName in Object.keys($slots)" #[slotName]="slotProps">
-          <slot v-if="slotName !== 'default'" :name="slotName" v-bind="slotProps" />
+          <slot v-if="!['default', 'total', 'pagination-data'].includes(slotName)" :name="slotName" v-bind="slotProps" />
         </template>
       </BTable>
     </BOverlay>
@@ -45,9 +45,14 @@
         :limit="limit"
         :page-limit="pageLimit"
         :loading="loading"
+        :format-total="formatTotal"
         class="mt-5 align-items-center justify-content-center justify-content-md-start g-0"
         @refresh="refresh"
-      />
+      >
+        <template v-for="slotName in Object.keys($slots)" #[slotName]="slotProps">
+          <slot v-if="['total', 'pagination-data'].includes(slotName)" :name="slotName" v-bind="slotProps" />
+        </template>
+      </VespTablePagination>
     </slot>
 
     <slot name="default" />
@@ -201,6 +206,10 @@ const props = defineProps({
     default() {
       return []
     },
+  },
+  formatTotal: {
+    type: Function as PropType<(total: number) => string>,
+    default: undefined,
   },
 })
 

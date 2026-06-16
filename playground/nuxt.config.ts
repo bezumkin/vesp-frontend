@@ -10,9 +10,20 @@ export default defineNuxtConfig({
     },
   },
   compatibilityDate: '2025-07-24',
-  vite: {css: {preprocessorOptions: {scss: {quietDeps: true}}}},
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          quietDeps: true,
+          silenceDeprecations: ['import'],
+        },
+      },
+    },
+  },
   eslint: {
-    checker: true,
+    checker: {
+      eslintPath: 'eslint',
+    },
     config: {
       stylistic: {
         semi: false,
